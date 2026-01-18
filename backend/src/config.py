@@ -1,0 +1,49 @@
+"""
+RinggitSense Configuration - Environment settings and constants
+"""
+from typing import List
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Settings(BaseSettings):
+    """Application settings loaded from environment variables."""
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=True,
+    )
+
+    # App Info
+    APP_NAME: str = "RinggitSense"
+    APP_VERSION: str = "1.0.0"
+    ENVIRONMENT: str = "development"
+    DEBUG: bool = True
+
+    # Server
+    HOST: str = "0.0.0.0"
+    PORT: int = 8000
+
+    # Database
+    DATABASE_URL: str = "postgresql+asyncpg://ringgitsense:ringgitsense@localhost:5432/ringgitsense"
+
+    # Security
+    SECRET_KEY: str = "change-me-in-production-use-strong-random-key"
+
+    # Clerk Authentication
+    CLERK_DOMAIN: str = "clerk.your-domain.com"  # e.g., "clerk.ringgitsense.com"
+    CLERK_JWT_AUDIENCE: str = ""  # Optional: restrict to specific audience
+
+    # CORS
+    CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
+
+    # Claude API (for agents)
+    ANTHROPIC_API_KEY: str = ""
+    CLAUDE_MODEL: str = "claude-sonnet-4-20250514"
+
+    # File Upload
+    MAX_UPLOAD_SIZE_MB: int = 10
+    ALLOWED_EXTENSIONS: List[str] = ["pdf", "csv"]
+
+
+settings = Settings()

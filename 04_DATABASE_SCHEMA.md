@@ -1,3 +1,4 @@
+
 # DuitSedar — Database Schema Documentation
 
 **Document Version:** 1.0  
