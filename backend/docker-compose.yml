@@ -2,10 +2,11 @@
 # NOTE: Start Docker Desktop before running docker-compose up
 
 services:
-  # PostgreSQL Database (use pgvector/pgvector:pg15 for vector support)
+  # PostgreSQL Database with pgvector extension
   postgres:
-    image: postgres:15-alpine
+    image: pgvector/pgvector:pg15
     container_name: ringgitsense-postgres
+    env_file: .env
     environment:
       POSTGRES_USER: ringgitsense
       POSTGRES_PASSWORD: ringgitsense
@@ -19,8 +20,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - ringgitsense
 
-  # Redis (for caching, optional in Phase 1)
+  # Redis (caching and rate limiting)
   redis:
     image: redis:7-alpine
     container_name: ringgitsense-redis
@@ -31,20 +34,31 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - ringgitsense
 
-  # FastAPI Backend (uncomment when ready)
-  # api:
-  #   build: .
-  #   container_name: ringgitsense-api
-  #   environment:
-  #     DATABASE_URL: postgresql+asyncpg://ringgitsense:ringgitsense@postgres:5432/ringgitsense
-  #   ports:
-  #     - "8000:8000"
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #   volumes:
-  #     - .:/app
+  # FastAPI Backend
+  api:
+    build: .
+    container_name: ringgitsense-api
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://ringgitsense:ringgitsense@postgres:5432/ringgitsense
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    networks:
+      - ringgitsense
 
 volumes:
   ringgitsense_postgres_data:
+
+networks:
+  ringgitsense:
+    driver: bridge

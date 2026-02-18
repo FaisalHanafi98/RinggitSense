@@ -10,7 +10,7 @@ asyncio_mode = "auto"
 testpaths = ["tests"]
 python_files = "test_*.py"
 python_functions = "test_*"
-addopts = "-v --tb=short"
+addopts = "-v --tb=short --cov=src --cov-report=term-missing"
 
 [tool.black]
 line-length = 100
@@ -29,8 +29,8 @@ exclude = '''
 
 [tool.ruff]
 line-length = 100
-select = ["E", "F", "W", "I", "N"]
-ignore = ["E501"]
+select = ["E", "F", "W", "I", "N", "UP", "B", "S"]
+ignore = ["E501", "S101"]
 exclude = [".git", ".mypy_cache", ".pytest_cache", "venv", "alembic"]
 
 [tool.mypy]
@@ -38,3 +38,16 @@ python_version = "3.11"
 warn_return_any = true
 warn_unused_configs = true
 ignore_missing_imports = true
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["src/*/migrations/*", "src/*/__init__.py"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 0
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.",
+]
