@@ -1,0 +1,154 @@
+{
+  "version": "1.0",
+  "description": "Expected AG-03 pattern analysis for golden dataset",
+  "recurring_expenses": [
+    {
+      "description": "TNB BILL PAYMENT",
+      "frequency": "monthly",
+      "amounts": [
+        125.5,
+        132.0,
+        140.0
+      ],
+      "trend": "RISING",
+      "source": "maybank"
+    },
+    {
+      "description": "UNIFI TM BROADBAND",
+      "frequency": "monthly",
+      "amount": 149.0,
+      "trend": "STABLE",
+      "source": "maybank"
+    },
+    {
+      "description": "CELCOM POSTPAID",
+      "frequency": "monthly",
+      "amount": 79.0,
+      "trend": "STABLE",
+      "source": "maybank"
+    },
+    {
+      "description": "NETFLIX MALAYSIA",
+      "frequency": "monthly",
+      "amount": 54.9,
+      "trend": "STABLE",
+      "source": "maybank"
+    },
+    {
+      "description": "GREAT EASTERN INSURANCE",
+      "frequency": "monthly",
+      "amount": 180.0,
+      "trend": "STABLE",
+      "source": "maybank"
+    },
+    {
+      "description": "SYABAS WATER BILL",
+      "frequency": "monthly",
+      "amounts": [
+        35.5,
+        38.0,
+        36.0
+      ],
+      "trend": "STABLE",
+      "source": "cimb"
+    },
+    {
+      "description": "MAXIS POSTPAID",
+      "frequency": "monthly",
+      "amount": 89.0,
+      "trend": "STABLE",
+      "source": "cimb"
+    },
+    {
+      "description": "ASTRO BILL PAYMENT",
+      "frequency": "monthly",
+      "amount": 99.9,
+      "trend": "STABLE",
+      "source": "cimb"
+    }
+  ],
+  "debt_recurring": [
+    {
+      "group": "ptptn_loan",
+      "frequency": "monthly",
+      "amount": 250.0,
+      "source": "maybank"
+    },
+    {
+      "group": "maybank_personal",
+      "frequency": "monthly",
+      "amount": 450.0,
+      "source": "maybank"
+    },
+    {
+      "group": "maybank_car",
+      "frequency": "monthly",
+      "amount": 850.0,
+      "source": "maybank"
+    },
+    {
+      "group": "aeon_cc",
+      "frequency": "monthly",
+      "amount": 350.0,
+      "source": "maybank"
+    },
+    {
+      "group": "cimb_housing",
+      "frequency": "monthly",
+      "amount": 1200.0,
+      "source": "cimb"
+    },
+    {
+      "group": "ptptn_loan_cimb",
+      "frequency": "monthly",
+      "amount": 300.0,
+      "source": "cimb"
+    },
+    {
+      "group": "cimb_personal",
+      "frequency": "monthly",
+      "amount": 380.0,
+      "source": "cimb"
+    }
+  ],
+  "spending_trends": [
+    {
+      "category": "FOOD",
+      "trend": "STABLE",
+      "monthly_avg_range": [
+        150,
+        350
+      ]
+    },
+    {
+      "category": "SHOPPING",
+      "trend": "RISING",
+      "note": "Increasing Shopee spend across months"
+    },
+    {
+      "category": "BILLS",
+      "trend": "RISING",
+      "note": "TNB electricity bill increasing"
+    }
+  ],
+  "anomalies": [
+    {
+      "description": "KPJ SPECIALIST HOSPITAL",
+      "amount": 280.0,
+      "reason": "Unusual large healthcare expense",
+      "source": "maybank"
+    },
+    {
+      "description": "GLENEAGLES HOSPITAL",
+      "amount": 450.0,
+      "reason": "Unusual large healthcare expense",
+      "source": "cimb"
+    },
+    {
+      "description": "LAZADA MALAYSIA",
+      "amount": 245.0,
+      "reason": "Large single online purchase",
+      "source": "maybank"
+    }
+  ]
+}

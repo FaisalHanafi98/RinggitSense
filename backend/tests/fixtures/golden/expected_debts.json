@@ -1,0 +1,1066 @@
+{
+  "version": "1.0",
+  "description": "Expected AG-02 debt detection for golden dataset",
+  "total_debt_transactions": 41,
+  "total_non_debt_transactions": 117,
+  "tiers_covered": [
+    "FORMAL",
+    "BNPL",
+    "HUTANG"
+  ],
+  "debt_transactions": [
+    {
+      "source": "maybank",
+      "index": 21,
+      "description": "PTPTN REPAYMENT",
+      "amount": 250.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "education_loan",
+      "expected_provider": "PTPTN",
+      "expected_person": null,
+      "expected_indicators": [
+        "PTPTN",
+        "REPAYMENT"
+      ],
+      "debt_group": "ptptn_loan",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 22,
+      "description": "MAYBANK PERSONAL LOAN",
+      "amount": 450.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "personal_loan",
+      "expected_provider": "Maybank",
+      "expected_person": null,
+      "expected_indicators": [
+        "PERSONAL LOAN"
+      ],
+      "debt_group": "maybank_personal",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 23,
+      "description": "MAYBANK HIRE PURCHASE",
+      "amount": 850.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "hire_purchase",
+      "expected_provider": "Maybank",
+      "expected_person": null,
+      "expected_indicators": [
+        "HIRE PURCHASE"
+      ],
+      "debt_group": "maybank_car",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 24,
+      "description": "SPAYLATER INSTALLMENT",
+      "amount": 89.9,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "SPayLater",
+      "expected_person": null,
+      "expected_indicators": [
+        "SPAYLATER",
+        "INSTALLMENT"
+      ],
+      "debt_group": "spaylater",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 25,
+      "description": "GRABPAYLATER REPAYMENT",
+      "amount": 45.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "GrabPayLater",
+      "expected_person": null,
+      "expected_indicators": [
+        "GRABPAYLATER",
+        "REPAYMENT"
+      ],
+      "debt_group": "grabpaylater",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 26,
+      "description": "ATOME PAYMENT 2/3",
+      "amount": 66.33,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "Atome",
+      "expected_person": null,
+      "expected_indicators": [
+        "ATOME",
+        "PAYMENT",
+        "2/3"
+      ],
+      "debt_group": "atome_1",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 40,
+      "description": "AEON BANK CREDIT CARD",
+      "amount": 350.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "credit_card",
+      "expected_provider": "Aeon Bank",
+      "expected_person": null,
+      "expected_indicators": [
+        "CREDIT CARD"
+      ],
+      "debt_group": "aeon_cc",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 56,
+      "description": "PTPTN REPAYMENT",
+      "amount": 250.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "education_loan",
+      "expected_provider": "PTPTN",
+      "expected_person": null,
+      "expected_indicators": [
+        "PTPTN",
+        "REPAYMENT"
+      ],
+      "debt_group": "ptptn_loan",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 57,
+      "description": "MAYBANK PERSONAL LOAN",
+      "amount": 450.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "personal_loan",
+      "expected_provider": "Maybank",
+      "expected_person": null,
+      "expected_indicators": [
+        "PERSONAL LOAN"
+      ],
+      "debt_group": "maybank_personal",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 58,
+      "description": "MAYBANK HIRE PURCHASE",
+      "amount": 850.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "hire_purchase",
+      "expected_provider": "Maybank",
+      "expected_person": null,
+      "expected_indicators": [
+        "HIRE PURCHASE"
+      ],
+      "debt_group": "maybank_car",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 59,
+      "description": "SPAYLATER INSTALLMENT",
+      "amount": 89.9,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "SPayLater",
+      "expected_person": null,
+      "expected_indicators": [
+        "SPAYLATER",
+        "INSTALLMENT"
+      ],
+      "debt_group": "spaylater",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 60,
+      "description": "ATOME PAYMENT 3/3",
+      "amount": 66.33,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "Atome",
+      "expected_person": null,
+      "expected_indicators": [
+        "ATOME",
+        "PAYMENT",
+        "3/3"
+      ],
+      "debt_group": "atome_1",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 61,
+      "description": "PINJAM DUIT AHMAD",
+      "amount": 300.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "HUTANG",
+      "expected_debt_type": "informal_loan",
+      "expected_provider": null,
+      "expected_person": "Ahmad",
+      "expected_indicators": [
+        "PINJAM",
+        "DUIT"
+      ],
+      "debt_group": "hutang_ahmad",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 62,
+      "description": "BAYAR BALIK DARI AHMAD",
+      "amount": 300.0,
+      "type": "credit",
+      "is_debt_related": true,
+      "expected_tier": "HUTANG",
+      "expected_debt_type": "informal_repayment",
+      "expected_provider": null,
+      "expected_person": "Ahmad",
+      "expected_indicators": [
+        "BAYAR BALIK"
+      ],
+      "debt_group": "hutang_ahmad",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 68,
+      "description": "AEON BANK CREDIT CARD",
+      "amount": 350.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "credit_card",
+      "expected_provider": "Aeon Bank",
+      "expected_person": null,
+      "expected_indicators": [
+        "CREDIT CARD"
+      ],
+      "debt_group": "aeon_cc",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 75,
+      "description": "PTPTN REPAYMENT",
+      "amount": 250.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "education_loan",
+      "expected_provider": "PTPTN",
+      "expected_person": null,
+      "expected_indicators": [
+        "PTPTN",
+        "REPAYMENT"
+      ],
+      "debt_group": "ptptn_loan",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 76,
+      "description": "MAYBANK PERSONAL LOAN",
+      "amount": 450.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "personal_loan",
+      "expected_provider": "Maybank",
+      "expected_person": null,
+      "expected_indicators": [
+        "PERSONAL LOAN"
+      ],
+      "debt_group": "maybank_personal",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 77,
+      "description": "MAYBANK HIRE PURCHASE",
+      "amount": 850.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "hire_purchase",
+      "expected_provider": "Maybank",
+      "expected_person": null,
+      "expected_indicators": [
+        "HIRE PURCHASE"
+      ],
+      "debt_group": "maybank_car",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 78,
+      "description": "SPAYLATER INSTALLMENT",
+      "amount": 89.9,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "SPayLater",
+      "expected_person": null,
+      "expected_indicators": [
+        "SPAYLATER",
+        "INSTALLMENT"
+      ],
+      "debt_group": "spaylater",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 79,
+      "description": "GRABPAYLATER REPAYMENT",
+      "amount": 45.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "GrabPayLater",
+      "expected_person": null,
+      "expected_indicators": [
+        "GRABPAYLATER",
+        "REPAYMENT"
+      ],
+      "debt_group": "grabpaylater",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 80,
+      "description": "HUTANG SITI - DUIT MAKAN",
+      "amount": 50.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "HUTANG",
+      "expected_debt_type": "informal_loan",
+      "expected_provider": null,
+      "expected_person": "Siti",
+      "expected_indicators": [
+        "HUTANG",
+        "DUIT"
+      ],
+      "debt_group": "hutang_siti",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 81,
+      "description": "AEON BANK CREDIT CARD",
+      "amount": 350.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "credit_card",
+      "expected_provider": "Aeon Bank",
+      "expected_person": null,
+      "expected_indicators": [
+        "CREDIT CARD"
+      ],
+      "debt_group": "aeon_cc",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 90,
+      "description": "ASB FINANCING PAYMENT",
+      "amount": 200.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "investment_loan",
+      "expected_provider": "ASB",
+      "expected_person": null,
+      "expected_indicators": [
+        "ASB FINANCING",
+        "PAYMENT"
+      ],
+      "debt_group": "asb_financing",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 91,
+      "description": "HOOLAH INSTALLMENT 1/4",
+      "amount": 75.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "Hoolah",
+      "expected_person": null,
+      "expected_indicators": [
+        "HOOLAH",
+        "INSTALLMENT",
+        "1/4"
+      ],
+      "debt_group": "hoolah_1",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "maybank",
+      "index": 92,
+      "description": "SPLIT PAYMENT KAMAL 2/2",
+      "amount": 55.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "Split",
+      "expected_person": null,
+      "expected_indicators": [
+        "SPLIT",
+        "PAYMENT",
+        "2/2"
+      ],
+      "debt_group": "split_1",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 17,
+      "description": "CIMB HOUSING LOAN",
+      "amount": 1200.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "housing_loan",
+      "expected_provider": "CIMB",
+      "expected_person": null,
+      "expected_indicators": [
+        "HOUSING LOAN"
+      ],
+      "debt_group": "cimb_housing",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 18,
+      "description": "PTPTN AUTO DEBIT",
+      "amount": 300.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "education_loan",
+      "expected_provider": "PTPTN",
+      "expected_person": null,
+      "expected_indicators": [
+        "PTPTN",
+        "AUTO DEBIT"
+      ],
+      "debt_group": "ptptn_loan_cimb",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 19,
+      "description": "SPAYLATER SHOPEE",
+      "amount": 55.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "SPayLater",
+      "expected_person": null,
+      "expected_indicators": [
+        "SPAYLATER"
+      ],
+      "debt_group": "spaylater_cimb",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 20,
+      "description": "ATOME INSTALLMENT 3/6",
+      "amount": 42.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "Atome",
+      "expected_person": null,
+      "expected_indicators": [
+        "ATOME",
+        "INSTALLMENT",
+        "3/6"
+      ],
+      "debt_group": "atome_cimb",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 35,
+      "description": "CIMB PERSONAL LOAN",
+      "amount": 380.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "personal_loan",
+      "expected_provider": "CIMB",
+      "expected_person": null,
+      "expected_indicators": [
+        "PERSONAL LOAN"
+      ],
+      "debt_group": "cimb_personal",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 36,
+      "description": "GRABPAYLATER 1/3",
+      "amount": 33.33,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "GrabPayLater",
+      "expected_person": null,
+      "expected_indicators": [
+        "GRABPAYLATER",
+        "1/3"
+      ],
+      "debt_group": "grabpaylater_cimb",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 46,
+      "description": "CIMB HOUSING LOAN",
+      "amount": 1200.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "housing_loan",
+      "expected_provider": "CIMB",
+      "expected_person": null,
+      "expected_indicators": [
+        "HOUSING LOAN"
+      ],
+      "debt_group": "cimb_housing",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 47,
+      "description": "PTPTN AUTO DEBIT",
+      "amount": 300.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "education_loan",
+      "expected_provider": "PTPTN",
+      "expected_person": null,
+      "expected_indicators": [
+        "PTPTN",
+        "AUTO DEBIT"
+      ],
+      "debt_group": "ptptn_loan_cimb",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 48,
+      "description": "CIMB PERSONAL LOAN",
+      "amount": 380.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "personal_loan",
+      "expected_provider": "CIMB",
+      "expected_person": null,
+      "expected_indicators": [
+        "PERSONAL LOAN"
+      ],
+      "debt_group": "cimb_personal",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 49,
+      "description": "SPAYLATER SHOPEE",
+      "amount": 55.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "SPayLater",
+      "expected_person": null,
+      "expected_indicators": [
+        "SPAYLATER"
+      ],
+      "debt_group": "spaylater_cimb",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 50,
+      "description": "BAYAR HUTANG KAMAL",
+      "amount": 80.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "HUTANG",
+      "expected_debt_type": "informal_repayment",
+      "expected_provider": null,
+      "expected_person": "Kamal",
+      "expected_indicators": [
+        "BAYAR",
+        "HUTANG"
+      ],
+      "debt_group": "hutang_kamal",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 54,
+      "description": "CIMB HOUSING LOAN",
+      "amount": 1200.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "housing_loan",
+      "expected_provider": "CIMB",
+      "expected_person": null,
+      "expected_indicators": [
+        "HOUSING LOAN"
+      ],
+      "debt_group": "cimb_housing",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 55,
+      "description": "PTPTN AUTO DEBIT",
+      "amount": 300.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "education_loan",
+      "expected_provider": "PTPTN",
+      "expected_person": null,
+      "expected_indicators": [
+        "PTPTN",
+        "AUTO DEBIT"
+      ],
+      "debt_group": "ptptn_loan_cimb",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 56,
+      "description": "CIMB PERSONAL LOAN",
+      "amount": 380.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "FORMAL",
+      "expected_debt_type": "personal_loan",
+      "expected_provider": "CIMB",
+      "expected_person": null,
+      "expected_indicators": [
+        "PERSONAL LOAN"
+      ],
+      "debt_group": "cimb_personal",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 57,
+      "description": "SPAYLATER SHOPEE",
+      "amount": 55.0,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "SPayLater",
+      "expected_person": null,
+      "expected_indicators": [
+        "SPAYLATER"
+      ],
+      "debt_group": "spaylater_cimb",
+      "min_confidence": 0.7
+    },
+    {
+      "source": "cimb",
+      "index": 58,
+      "description": "GRABPAYLATER 2/3",
+      "amount": 33.33,
+      "type": "debit",
+      "is_debt_related": true,
+      "expected_tier": "BNPL",
+      "expected_debt_type": "installment",
+      "expected_provider": "GrabPayLater",
+      "expected_person": null,
+      "expected_indicators": [
+        "GRABPAYLATER",
+        "2/3"
+      ],
+      "debt_group": "grabpaylater_cimb",
+      "min_confidence": 0.7
+    }
+  ],
+  "non_debt_sample": [
+    {
+      "source": "maybank",
+      "index": 0,
+      "description": "SALARY JAN 2026",
+      "amount": 5500.0,
+      "type": "credit",
+      "is_debt_related": false
+    },
+    {
+      "source": "maybank",
+      "index": 1,
+      "description": "MCDONALD'S SUNWAY PYRAMID",
+      "amount": 25.9,
+      "type": "debit",
+      "is_debt_related": false
+    },
+    {
+      "source": "maybank",
+      "index": 2,
+      "description": "NASI KANDAR PELITA BANGSAR",
+      "amount": 12.5,
+      "type": "debit",
+      "is_debt_related": false
+    },
+    {
+      "source": "maybank",
+      "index": 3,
+      "description": "JAYA GROCER MID VALLEY",
+      "amount": 156.8,
+      "type": "debit",
+      "is_debt_related": false
+    },
+    {
+      "source": "maybank",
+      "index": 4,
+      "description": "GRAB FOOD DELIVERY",
+      "amount": 35.0,
+      "type": "debit",
+      "is_debt_related": false
+    },
+    {
+      "source": "maybank",
+      "index": 5,
+      "description": "PLUS TOLL PLZ SUBANG",
+      "amount": 3.2,
+      "type": "debit",
+      "is_debt_related": false
+    },
+    {
+      "source": "maybank",
+      "index": 6,
+      "description": "DUKE TOLL DUTA ULU KLANG",
+      "amount": 1.6,
+      "type": "debit",
+      "is_debt_related": false
+    },
+    {
+      "source": "maybank",
+      "index": 7,
+      "description": "PETRONAS BANGSAR SOUTH",
+      "amount": 85.0,
+      "type": "debit",
+      "is_debt_related": false
+    },
+    {
+      "source": "maybank",
+      "index": 8,
+      "description": "GRAB CAR KUALA LUMPUR",
+      "amount": 18.5,
+      "type": "debit",
+      "is_debt_related": false
+    },
+    {
+      "source": "maybank",
+      "index": 9,
+      "description": "RAPIDKL MRT TOPUP",
+      "amount": 50.0,
+      "type": "debit",
+      "is_debt_related": false
+    }
+  ],
+  "debt_groups": [
+    {
+      "group_key": "ptptn_loan",
+      "source": "maybank",
+      "tier": "FORMAL",
+      "provider": "PTPTN",
+      "person": null,
+      "debt_type": "education_loan",
+      "transaction_count": 3,
+      "total_amount": 750.0,
+      "estimated_monthly": 250.0
+    },
+    {
+      "group_key": "maybank_personal",
+      "source": "maybank",
+      "tier": "FORMAL",
+      "provider": "Maybank",
+      "person": null,
+      "debt_type": "personal_loan",
+      "transaction_count": 3,
+      "total_amount": 1350.0,
+      "estimated_monthly": 450.0
+    },
+    {
+      "group_key": "maybank_car",
+      "source": "maybank",
+      "tier": "FORMAL",
+      "provider": "Maybank",
+      "person": null,
+      "debt_type": "hire_purchase",
+      "transaction_count": 3,
+      "total_amount": 2550.0,
+      "estimated_monthly": 850.0
+    },
+    {
+      "group_key": "spaylater",
+      "source": "maybank",
+      "tier": "BNPL",
+      "provider": "SPayLater",
+      "person": null,
+      "debt_type": "installment",
+      "transaction_count": 3,
+      "total_amount": 269.70000000000005,
+      "estimated_monthly": 89.9
+    },
+    {
+      "group_key": "grabpaylater",
+      "source": "maybank",
+      "tier": "BNPL",
+      "provider": "GrabPayLater",
+      "person": null,
+      "debt_type": "installment",
+      "transaction_count": 2,
+      "total_amount": 90.0,
+      "estimated_monthly": 45.0
+    },
+    {
+      "group_key": "atome_1",
+      "source": "maybank",
+      "tier": "BNPL",
+      "provider": "Atome",
+      "person": null,
+      "debt_type": "installment",
+      "transaction_count": 2,
+      "total_amount": 132.66,
+      "estimated_monthly": 66.33
+    },
+    {
+      "group_key": "aeon_cc",
+      "source": "maybank",
+      "tier": "FORMAL",
+      "provider": "Aeon Bank",
+      "person": null,
+      "debt_type": "credit_card",
+      "transaction_count": 3,
+      "total_amount": 1050.0,
+      "estimated_monthly": 350.0
+    },
+    {
+      "group_key": "hutang_ahmad",
+      "source": "maybank",
+      "tier": "HUTANG",
+      "provider": null,
+      "person": "Ahmad",
+      "debt_type": "informal_loan",
+      "transaction_count": 2,
+      "total_amount": 600.0,
+      "estimated_monthly": null
+    },
+    {
+      "group_key": "hutang_siti",
+      "source": "maybank",
+      "tier": "HUTANG",
+      "provider": null,
+      "person": "Siti",
+      "debt_type": "informal_loan",
+      "transaction_count": 1,
+      "total_amount": 50.0,
+      "estimated_monthly": null
+    },
+    {
+      "group_key": "asb_financing",
+      "source": "maybank",
+      "tier": "FORMAL",
+      "provider": "ASB",
+      "person": null,
+      "debt_type": "investment_loan",
+      "transaction_count": 1,
+      "total_amount": 200.0,
+      "estimated_monthly": 200.0
+    },
+    {
+      "group_key": "hoolah_1",
+      "source": "maybank",
+      "tier": "BNPL",
+      "provider": "Hoolah",
+      "person": null,
+      "debt_type": "installment",
+      "transaction_count": 1,
+      "total_amount": 75.0,
+      "estimated_monthly": 75.0
+    },
+    {
+      "group_key": "split_1",
+      "source": "maybank",
+      "tier": "BNPL",
+      "provider": "Split",
+      "person": null,
+      "debt_type": "installment",
+      "transaction_count": 1,
+      "total_amount": 55.0,
+      "estimated_monthly": 55.0
+    },
+    {
+      "group_key": "cimb_housing",
+      "source": "cimb",
+      "tier": "FORMAL",
+      "provider": "CIMB",
+      "person": null,
+      "debt_type": "housing_loan",
+      "transaction_count": 3,
+      "total_amount": 3600.0,
+      "estimated_monthly": 1200.0
+    },
+    {
+      "group_key": "ptptn_loan_cimb",
+      "source": "cimb",
+      "tier": "FORMAL",
+      "provider": "PTPTN",
+      "person": null,
+      "debt_type": "education_loan",
+      "transaction_count": 3,
+      "total_amount": 900.0,
+      "estimated_monthly": 300.0
+    },
+    {
+      "group_key": "spaylater_cimb",
+      "source": "cimb",
+      "tier": "BNPL",
+      "provider": "SPayLater",
+      "person": null,
+      "debt_type": "installment",
+      "transaction_count": 3,
+      "total_amount": 165.0,
+      "estimated_monthly": 55.0
+    },
+    {
+      "group_key": "atome_cimb",
+      "source": "cimb",
+      "tier": "BNPL",
+      "provider": "Atome",
+      "person": null,
+      "debt_type": "installment",
+      "transaction_count": 1,
+      "total_amount": 42.0,
+      "estimated_monthly": 42.0
+    },
+    {
+      "group_key": "cimb_personal",
+      "source": "cimb",
+      "tier": "FORMAL",
+      "provider": "CIMB",
+      "person": null,
+      "debt_type": "personal_loan",
+      "transaction_count": 3,
+      "total_amount": 1140.0,
+      "estimated_monthly": 380.0
+    },
+    {
+      "group_key": "grabpaylater_cimb",
+      "source": "cimb",
+      "tier": "BNPL",
+      "provider": "GrabPayLater",
+      "person": null,
+      "debt_type": "installment",
+      "transaction_count": 2,
+      "total_amount": 66.66,
+      "estimated_monthly": 33.33
+    },
+    {
+      "group_key": "hutang_kamal",
+      "source": "cimb",
+      "tier": "HUTANG",
+      "provider": null,
+      "person": "Kamal",
+      "debt_type": "informal_repayment",
+      "transaction_count": 1,
+      "total_amount": 80.0,
+      "estimated_monthly": null
+    }
+  ],
+  "tier_summary": {
+    "FORMAL": {
+      "count": 8,
+      "providers": [
+        "PTPTN",
+        "ASB",
+        "Aeon Bank",
+        "Maybank",
+        "CIMB"
+      ],
+      "people": [],
+      "total_monthly": 3980.0
+    },
+    "BNPL": {
+      "count": 8,
+      "providers": [
+        "Split",
+        "Hoolah",
+        "SPayLater",
+        "Atome",
+        "GrabPayLater"
+      ],
+      "people": [],
+      "total_monthly": 461.56
+    },
+    "HUTANG": {
+      "count": 3,
+      "providers": [],
+      "people": [
+        "Siti",
+        "Kamal",
+        "Ahmad"
+      ],
+      "total_monthly": 0
+    }
+  }
+}
