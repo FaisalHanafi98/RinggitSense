@@ -7,6 +7,22 @@ and that the AgentPipeline validates handoffs correctly.
 import pytest
 from pydantic import ValidationError
 
+from src.schemas.agents.advisor import (
+    AdviceResponse,
+    Recommendation,
+)
+from src.schemas.agents.base import AgentContractViolation
+from src.schemas.agents.categorizer import (
+    CategorizerBatchInput,
+    CategorizerBatchOutput,
+    CategorizerInput,
+    CategorizerOutput,
+)
+from src.schemas.agents.debt_detector import (
+    DebtDetectorOutput,
+    DebtSummary,
+    DebtTierSummary,
+)
 from src.schemas.agents.enums import (
     AdviceCategory,
     DebtTier,
@@ -15,19 +31,8 @@ from src.schemas.agents.enums import (
     TransactionCategory,
     Trend,
 )
-from src.schemas.agents.categorizer import (
-    CategorizerInput,
-    CategorizerOutput,
-    CategorizerBatchInput,
-    CategorizerBatchOutput,
-)
-from src.schemas.agents.debt_detector import (
-    DebtDetectorInput,
-    DebtDetectorOutput,
-    DebtSummary,
-    DebtTierSummary,
-)
 from src.schemas.agents.pattern_analyzer import PatternItem, PatternResult
+from src.schemas.agents.pipeline import AgentPipeline
 from src.schemas.agents.predictor import (
     CategoryPrediction,
     ConfidenceInterval,
@@ -35,15 +40,6 @@ from src.schemas.agents.predictor import (
     PredictorInput,
 )
 from src.schemas.agents.query import QueryContext, QueryInput, QueryResponse
-from src.schemas.agents.advisor import (
-    AdvisorInput,
-    AdviceResponse,
-    Recommendation,
-    UserProfile,
-)
-from src.schemas.agents.base import AgentContractViolation
-from src.schemas.agents.pipeline import AgentPipeline
-
 
 # ─── AG-01 Categorizer ──────────────────────────────────────────────
 

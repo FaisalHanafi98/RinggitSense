@@ -8,8 +8,8 @@ Supports parsing of Malaysian bank statements from:
 - Touch 'n Go (CSV)
 """
 from src.parsers.base import BaseParser, ParsedTransaction, ParserResult
-from src.parsers.maybank import MaybankParser
 from src.parsers.cimb import CIMBParser
+from src.parsers.maybank import MaybankParser
 
 __all__ = [
     "BaseParser",

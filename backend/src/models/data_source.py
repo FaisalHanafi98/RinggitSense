@@ -3,13 +3,12 @@ RinggitSense - Data Source model (banks and e-wallets)
 """
 import uuid
 from datetime import date, datetime
-from typing import Optional
-from sqlalchemy import String, Integer, Date, JSON, ForeignKey, CheckConstraint
+
+from sqlalchemy import JSON, CheckConstraint, Date, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.models.base import Base, UUIDMixin, TimestampMixin
-
+from src.models.base import Base, TimestampMixin, UUIDMixin
 
 # Valid source types for Malaysian banks and e-wallets
 SOURCE_TYPES = [
@@ -37,10 +36,10 @@ class DataSource(Base, UUIDMixin, TimestampMixin):
     )
     source_type: Mapped[str] = mapped_column(String(50), nullable=False)
     source_name: Mapped[str] = mapped_column(String(255), nullable=False)
-    last_synced: Mapped[Optional[datetime]] = mapped_column(nullable=True)
+    last_synced: Mapped[datetime | None] = mapped_column(nullable=True)
     total_transactions: Mapped[int] = mapped_column(Integer, default=0)
-    date_range_start: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
-    date_range_end: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
+    date_range_start: Mapped[date | None] = mapped_column(Date, nullable=True)
+    date_range_end: Mapped[date | None] = mapped_column(Date, nullable=True)
     config: Mapped[dict] = mapped_column(JSON, default=dict)
 
     # Relationships

@@ -1,7 +1,7 @@
 """
 RinggitSense Configuration - Environment settings and constants
 """
-from typing import List
+
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -22,21 +22,21 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     # Server
-    HOST: str = "0.0.0.0"
+    HOST: str = "0.0.0.0"  # noqa: S104
     PORT: int = 8000
 
     # Database
     DATABASE_URL: str = "postgresql+asyncpg://ringgitsense:ringgitsense@localhost:5432/ringgitsense"
 
     # Security
-    SECRET_KEY: str = "change-me-in-production-use-strong-random-key"
+    SECRET_KEY: str = "change-me-in-production-use-strong-random-key"  # noqa: S105
 
     # Clerk Authentication
     CLERK_DOMAIN: str = "clerk.your-domain.com"  # e.g., "clerk.ringgitsense.com"
     CLERK_JWT_AUDIENCE: str = ""  # Optional: restrict to specific audience
 
     # CORS
-    CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
+    CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://localhost:5173"]
 
     # Claude API (for agents)
     ANTHROPIC_API_KEY: str = ""
@@ -44,7 +44,7 @@ class Settings(BaseSettings):
 
     # File Upload
     MAX_UPLOAD_SIZE_MB: int = 10
-    ALLOWED_EXTENSIONS: List[str] = ["pdf", "csv"]
+    ALLOWED_EXTENSIONS: list[str] = ["pdf", "csv"]
 
     @model_validator(mode="after")
     def validate_production_settings(self) -> "Settings":

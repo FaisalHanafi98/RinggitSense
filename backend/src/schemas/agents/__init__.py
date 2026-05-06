@@ -3,15 +3,10 @@ RinggitSense - Agent data contracts.
 
 Pydantic models defining the input/output schemas for the 6-agent pipeline.
 """
-from src.schemas.agents.enums import (
-    AdviceCategory,
-    ConfidenceLevel,
-    DebtDirection,
-    DebtTier,
-    Difficulty,
-    PatternType,
-    TransactionCategory,
-    Trend,
+from src.schemas.agents.advisor import (
+    AdviceResponse,
+    AdvisorInput,
+    Recommendation,
 )
 from src.schemas.agents.base import (
     AgentContractViolation,
@@ -30,11 +25,22 @@ from src.schemas.agents.debt_detector import (
     DebtDetectorOutput,
     DebtSummary,
 )
+from src.schemas.agents.enums import (
+    AdviceCategory,
+    ConfidenceLevel,
+    DebtDirection,
+    DebtTier,
+    Difficulty,
+    PatternType,
+    TransactionCategory,
+    Trend,
+)
 from src.schemas.agents.pattern_analyzer import (
     PatternAnalyzerInput,
     PatternItem,
     PatternResult,
 )
+from src.schemas.agents.pipeline import AgentPipeline
 from src.schemas.agents.predictor import (
     PredictionResult,
     PredictorInput,
@@ -43,12 +49,6 @@ from src.schemas.agents.query import (
     QueryInput,
     QueryResponse,
 )
-from src.schemas.agents.advisor import (
-    AdvisorInput,
-    AdviceResponse,
-    Recommendation,
-)
-from src.schemas.agents.pipeline import AgentPipeline
 
 __all__ = [
     # Enums

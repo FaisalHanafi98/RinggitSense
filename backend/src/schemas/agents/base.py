@@ -8,7 +8,7 @@ from datetime import datetime
 from pydantic import BaseModel, Field
 
 
-class AgentContractViolation(Exception):
+class AgentContractViolation(Exception):  # noqa: N818
     """Raised when agent output does not match the expected contract schema."""
 
     def __init__(self, from_agent: str, to_agent: str, message: str) -> None:

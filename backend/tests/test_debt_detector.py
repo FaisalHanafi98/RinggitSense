@@ -15,7 +15,6 @@ import pytest
 
 from src.schemas.agents.enums import DebtTier
 
-
 GOLDEN_DIR = Path(__file__).parent / "fixtures" / "golden"
 
 
@@ -700,7 +699,7 @@ class TestGoldenDatasetDebtDetection:
     """Validate expected_debts.json structure and coverage."""
 
     def setup_method(self):
-        with open(GOLDEN_DIR / "expected_debts.json", "r") as f:
+        with open(GOLDEN_DIR / "expected_debts.json") as f:
             self.expected = json.load(f)
 
     def test_all_three_tiers_covered(self):

@@ -3,24 +3,22 @@ RinggitSense - Transaction routes (upload and list)
 """
 import uuid
 from datetime import date
-from decimal import Decimal
-from typing import Optional
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query, UploadFile, status
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth import get_current_user
-from src.database import get_db
 from src.data_quality.transaction_validator import (
     DuplicateStatus,
     TransactionValidator,
 )
+from src.database import get_db
 from src.models.data_source import DataSource
 from src.models.transaction import Transaction
 from src.models.user import User
-from src.parsers import get_parser, PARSER_REGISTRY
-from src.parsers.base import ParsedTransaction
+from src.parsers import PARSER_REGISTRY, get_parser
+from src.parsers.base import ParsedTransaction, TransactionType
 from src.schemas.base import APIResponse, PaginationMeta
 from src.schemas.transaction import (
     DuplicateDetail,
@@ -132,7 +130,7 @@ async def upload_transactions(
     # Filter to only valid transactions
     valid_transactions = [
         txn
-        for txn, vr in zip(parse_result.transactions, batch_result.results)
+        for txn, vr in zip(parse_result.transactions, batch_result.results, strict=False)
         if vr.is_valid
     ]
 
@@ -156,7 +154,7 @@ async def upload_transactions(
                 transaction_date=t.transaction_date,
                 description=t.description,
                 amount=t.amount,
-                transaction_type="debit",  # type doesn't matter for dedup
+                transaction_type=TransactionType.DEBIT,  # type doesn't matter for dedup
             )
             for t in existing_db_txns
         ]
@@ -271,11 +269,11 @@ async def list_transactions(
     db: AsyncSession = Depends(get_db),
     page: int = Query(1, ge=1, description="Page number"),
     limit: int = Query(50, ge=1, le=200, description="Items per page"),
-    category: Optional[str] = Query(None, description="Filter by category"),
-    date_from: Optional[date] = Query(None, description="Start date (inclusive)"),
-    date_to: Optional[date] = Query(None, description="End date (inclusive)"),
-    source_id: Optional[uuid.UUID] = Query(None, description="Filter by data source"),
-    search: Optional[str] = Query(None, min_length=1, max_length=200, description="Search description"),
+    category: str | None = Query(None, description="Filter by category"),
+    date_from: date | None = Query(None, description="Start date (inclusive)"),
+    date_to: date | None = Query(None, description="End date (inclusive)"),
+    source_id: uuid.UUID | None = Query(None, description="Filter by data source"),
+    search: str | None = Query(None, min_length=1, max_length=200, description="Search description"),
 ):
     """List transactions for the current user with pagination and filtering."""
     # Base query scoped to user

@@ -12,11 +12,12 @@ import logging
 import time
 from typing import Any
 
+from pydantic import BaseModel, Field
+
 from src.agents.base import BaseAgent
 from src.schemas.agents.debt_detector import (
     DebtDetectorOutput,
 )
-from src.schemas.agents.enums import DebtTier
 
 logger = logging.getLogger(__name__)
 
@@ -86,9 +87,6 @@ return a corresponding result in the output array. Maintain the same order and I
 
 OUTPUT FORMAT (JSON only, no markdown):
 {"results": [{"id": "txn_id", "is_debt_related": true/false, "debt_tier": "FORMAL"/"BNPL"/"HUTANG"/null, "debt_type": "type_or_null", "provider": "provider_or_null", "confidence": 0.XX, "indicators": ["keyword1"], "estimated_monthly": amount_or_null, "person_name": "name_or_null"}, ...]}"""
-
-
-from pydantic import BaseModel, Field
 
 
 class DebtDetectorBatchResultItem(DebtDetectorOutput):
@@ -173,7 +171,7 @@ class DebtDetectorAgent(BaseAgent):
         )
 
         elapsed_ms = int((time.monotonic() - start_time) * 1000)
-        raw = self._parse_json_response(message.content[0].text)
+        raw = self._parse_json_response(self._first_text_block(message))
 
         results: list[DebtDetectorBatchResultItem] = []
         error_count = 0

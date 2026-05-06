@@ -6,7 +6,7 @@ All 6 agents (AG-01 through AG-06) inherit from this base.
 import json
 import logging
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, cast
 
 import anthropic
 
@@ -40,7 +40,9 @@ class BaseAgent(ABC):
         # Try direct parse first
         text = text.strip()
         try:
-            return json.loads(text)
+            parsed = json.loads(text)
+            if isinstance(parsed, dict):
+                return cast(dict[str, Any], parsed)
         except json.JSONDecodeError:
             pass
 
@@ -51,9 +53,19 @@ class BaseAgent(ABC):
             content_start = text.find("\n", start) + 1
             end = text.find("```", content_start)
             if end > content_start:
-                return json.loads(text[content_start:end].strip())
+                parsed = json.loads(text[content_start:end].strip())
+                if isinstance(parsed, dict):
+                    return cast(dict[str, Any], parsed)
 
         raise ValueError(f"Could not parse JSON from agent response: {text[:200]}")
+
+    def _first_text_block(self, message: Any) -> str:
+        """Return the first Claude text block from a message response."""
+        block = message.content[0]
+        text = getattr(block, "text", None)
+        if not isinstance(text, str):
+            raise ValueError("Claude response did not include a text block")
+        return text
 
     def invoke(self, data: dict[str, Any]) -> dict[str, Any]:
         """Call the Claude API and return parsed JSON output.
@@ -78,7 +90,7 @@ class BaseAgent(ABC):
             ],
         )
 
-        response_text = message.content[0].text
+        response_text = self._first_text_block(message)
         logger.debug(
             "%s response (tokens: %d in / %d out): %s",
             self.AGENT_ID,

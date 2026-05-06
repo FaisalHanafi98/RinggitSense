@@ -1,13 +1,12 @@
 """
 RinggitSense - User model
 """
-import uuid
 from decimal import Decimal
-from typing import Optional
-from sqlalchemy import String, Numeric, JSON
+
+from sqlalchemy import JSON, Numeric, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.models.base import Base, UUIDMixin, TimestampMixin
+from src.models.base import Base, TimestampMixin, UUIDMixin
 
 
 class User(Base, UUIDMixin, TimestampMixin):
@@ -17,8 +16,8 @@ class User(Base, UUIDMixin, TimestampMixin):
 
     clerk_id: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
     email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
-    name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
-    monthly_income: Mapped[Optional[Decimal]] = mapped_column(Numeric(12, 2), nullable=True)
+    name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    monthly_income: Mapped[Decimal | None] = mapped_column(Numeric(12, 2), nullable=True)
     currency: Mapped[str] = mapped_column(String(3), default="MYR")
     settings: Mapped[dict] = mapped_column(JSON, default=dict)
 

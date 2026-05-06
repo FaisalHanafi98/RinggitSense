@@ -1,17 +1,18 @@
 """
 Test bank statement parsers
 """
-import pytest
 from datetime import date
 from decimal import Decimal
 
+import pytest
+
 from src.parsers import (
-    MaybankParser,
     CIMBParser,
-    get_parser,
-    detect_bank,
+    MaybankParser,
     ParsedTransaction,
     ParserResult,
+    detect_bank,
+    get_parser,
 )
 from src.parsers.base import TransactionType
 
@@ -20,7 +21,7 @@ class TestParserImports:
     """Test that parser modules can be imported."""
 
     def test_import_parsers(self):
-        from src.parsers import MaybankParser, CIMBParser, BaseParser
+        from src.parsers import BaseParser, CIMBParser, MaybankParser
         assert MaybankParser is not None
         assert CIMBParser is not None
         assert BaseParser is not None

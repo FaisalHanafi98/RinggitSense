@@ -1,15 +1,22 @@
 """
 Test SQLAlchemy model imports and basic structure
 """
-import pytest
 
 
 def test_all_models_import():
     """Test that all models can be imported."""
     from src.models import (
-        Base, User, DataSource, Transaction,
-        Debt, DebtItem, Prediction, Advice, Pattern, AuditLog,
+        Advice,
+        AuditLog,
+        Base,
+        DataSource,
+        Debt,
+        DebtItem,
+        Pattern,
         PipelineRun,
+        Prediction,
+        Transaction,
+        User,
     )
     assert Base is not None
     assert User is not None
@@ -27,9 +34,16 @@ def test_all_models_import():
 def test_model_tablenames():
     """Test that models have correct table names."""
     from src.models import (
-        User, DataSource, Transaction,
-        Debt, DebtItem, Prediction, Advice, Pattern, AuditLog,
+        Advice,
+        AuditLog,
+        DataSource,
+        Debt,
+        DebtItem,
+        Pattern,
         PipelineRun,
+        Prediction,
+        Transaction,
+        User,
     )
 
     expected = {

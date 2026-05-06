@@ -16,7 +16,6 @@ from src.models.pipeline_run import PipelineRun
 from src.models.user import User
 from src.services.pipeline import PIPELINE_STAGES, get_claude_semaphore
 
-
 # ─── Fixtures ────────────────────────────────────────────────────────
 
 
@@ -366,7 +365,6 @@ class TestPipelineService:
     @patch("src.agents.pattern_analyzer.PatternAnalyzerAgent")
     async def test_execute_stage_pattern_analyzer_returns_patterns(self, mock_agent_cls):
         from src.services.pipeline import _execute_stage
-        from src.schemas.agents.enums import PatternType
 
         mock_pattern = MagicMock()
         mock_pattern.type.value = "HIDDEN_COST"

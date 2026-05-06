@@ -29,9 +29,15 @@ exclude = '''
 
 [tool.ruff]
 line-length = 100
+exclude = [".git", ".mypy_cache", ".pytest_cache", "venv", "alembic"]
+
+[tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "S"]
 ignore = ["E501", "S101"]
-exclude = [".git", ".mypy_cache", ".pytest_cache", "venv", "alembic"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/auth.py" = ["B008"]
+"src/routers/*.py" = ["B008"]
 
 [tool.mypy]
 python_version = "3.11"

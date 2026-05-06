@@ -6,11 +6,12 @@ import uuid
 from datetime import date
 from decimal import Decimal
 from typing import TYPE_CHECKING, Optional
-from sqlalchemy import String, Text, Date, Boolean, Numeric, ForeignKey
+
+from sqlalchemy import Boolean, Date, ForeignKey, Numeric, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.models.base import Base, UUIDMixin, TimestampMixin
+from src.models.base import Base, TimestampMixin, UUIDMixin
 
 if TYPE_CHECKING:
     from src.models.debt import Debt
@@ -36,16 +37,16 @@ class DebtItem(Base, UUIDMixin, TimestampMixin):
 
     # Payment tracking
     is_paid: Mapped[bool] = mapped_column(Boolean, default=False)
-    paid_date: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
-    paid_amount: Mapped[Optional[Decimal]] = mapped_column(Numeric(12, 2), nullable=True)
-    linked_transaction_id: Mapped[Optional[uuid.UUID]] = mapped_column(
+    paid_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+    paid_amount: Mapped[Decimal | None] = mapped_column(Numeric(12, 2), nullable=True)
+    linked_transaction_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True),
         ForeignKey("transactions.id", ondelete="SET NULL"),
         nullable=True
     )
 
     # Metadata
-    notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # Relationships
     debt: Mapped["Debt"] = relationship("Debt", back_populates="items")

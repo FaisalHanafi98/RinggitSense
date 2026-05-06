@@ -5,9 +5,9 @@ Validates that agent outputs conform to data quality rules
 beyond schema validation (which Pydantic handles).
 These are semantic/business-logic validations.
 """
+from src.schemas.agents.advisor import AdviceResponse
 from src.schemas.agents.categorizer import CategorizerOutput
 from src.schemas.agents.debt_detector import DebtDetectorOutput
-from src.schemas.agents.advisor import AdviceResponse
 from src.schemas.agents.enums import DebtTier
 
 

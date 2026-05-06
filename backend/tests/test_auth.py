@@ -2,18 +2,16 @@
 Test authentication endpoints and dependencies
 """
 import time
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import jwt as pyjwt
 import pytest
 from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.primitives import serialization
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
-from unittest.mock import AsyncMock, patch, MagicMock
 
 from src.auth import ClerkJWTVerifier, ClerkUser
 from src.main import app
-
 
 client = TestClient(app)
 
@@ -204,11 +202,11 @@ def test_user_endpoint_rejects_invalid_token():
 def test_auth_module_imports():
     """Test that auth module can be imported."""
     from src.auth import (
+        ClerkJWTVerifier,
+        ClerkUser,
         get_clerk_user,
         get_current_user,
         get_optional_user,
-        ClerkJWTVerifier,
-        ClerkUser,
     )
     assert get_clerk_user is not None
     assert get_current_user is not None
@@ -243,7 +241,7 @@ def test_clerk_user_optional_fields():
 
 def test_database_module_imports():
     """Test that database module can be imported."""
-    from src.database import engine, async_session_maker, get_db
+    from src.database import async_session_maker, engine, get_db
     assert engine is not None
     assert async_session_maker is not None
     assert get_db is not None

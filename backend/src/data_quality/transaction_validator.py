@@ -10,12 +10,12 @@ Implements validation layers L1-L4 from the controlled strategy session:
 from dataclasses import dataclass, field
 from datetime import date
 from decimal import Decimal
-from enum import Enum
+from enum import StrEnum
 
 from src.parsers.base import ParsedTransaction, ParserResult
 
 
-class DuplicateStatus(str, Enum):
+class DuplicateStatus(StrEnum):
     """Result of duplicate check."""
     UNIQUE = "UNIQUE"
     DUPLICATE = "DUPLICATE"

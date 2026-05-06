@@ -5,8 +5,6 @@ Tests file validation (L1), parsing, validation (L2/L3),
 and the GET /transactions paginated list endpoint.
 DB operations are mocked.
 """
-import io
-import os
 import uuid
 from datetime import date, datetime
 from decimal import Decimal

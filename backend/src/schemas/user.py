@@ -3,8 +3,8 @@ RinggitSense - User schemas
 """
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
 from uuid import UUID
+
 from pydantic import BaseModel, ConfigDict
 
 
@@ -14,15 +14,15 @@ class UserResponse(BaseModel):
 
     id: UUID
     email: str
-    name: Optional[str] = None
-    monthly_income: Optional[Decimal] = None
+    name: str | None = None
+    monthly_income: Decimal | None = None
     currency: str = "MYR"
     created_at: datetime
 
 
 class UserUpdate(BaseModel):
     """User update schema."""
-    name: Optional[str] = None
-    monthly_income: Optional[Decimal] = None
-    currency: Optional[str] = None
-    settings: Optional[dict] = None
+    name: str | None = None
+    monthly_income: Decimal | None = None
+    currency: str | None = None
+    settings: dict | None = None

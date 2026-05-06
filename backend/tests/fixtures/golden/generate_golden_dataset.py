@@ -16,9 +16,8 @@ Outputs (in the same directory):
     - expected_patterns.json    AG-03 expected pattern analysis output
 """
 import csv
-import json
 import io
-import os
+import json
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Any

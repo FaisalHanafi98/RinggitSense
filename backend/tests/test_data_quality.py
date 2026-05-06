@@ -6,24 +6,21 @@ Tests transaction validation (L2-L4) and agent output validation.
 from datetime import date, timedelta
 from decimal import Decimal
 
-import pytest
-
-from src.parsers.base import ParsedTransaction, ParserResult, TransactionType
+from src.data_quality.agent_output_validator import AgentOutputValidator
 from src.data_quality.transaction_validator import (
     DuplicateStatus,
     TransactionValidator,
 )
-from src.data_quality.agent_output_validator import AgentOutputValidator
+from src.parsers.base import ParsedTransaction, ParserResult, TransactionType
+from src.schemas.agents.advisor import AdviceResponse, Recommendation
 from src.schemas.agents.categorizer import CategorizerOutput
 from src.schemas.agents.debt_detector import DebtDetectorOutput
-from src.schemas.agents.advisor import AdviceResponse, Recommendation
 from src.schemas.agents.enums import (
     AdviceCategory,
     DebtTier,
     Difficulty,
     TransactionCategory,
 )
-
 
 # ─── Helpers ─────────────────────────────────────────────────────────
 

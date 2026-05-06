@@ -1,12 +1,13 @@
 """
 RinggitSense - Clerk JWT authentication
 """
+
+from typing import Any, cast
+
 import httpx
 import jwt
-from datetime import datetime, timezone
-from typing import Optional
 from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -22,15 +23,15 @@ security = HTTPBearer(auto_error=False)
 class ClerkUser(BaseModel):
     """Clerk user info extracted from JWT."""
     clerk_id: str
-    email: Optional[str] = None
-    name: Optional[str] = None
+    email: str | None = None
+    name: str | None = None
 
 
 class ClerkJWTVerifier:
     """Verifies Clerk JWT tokens using JWKS."""
 
-    def __init__(self):
-        self._jwks: Optional[dict] = None
+    def __init__(self) -> None:
+        self._jwks: dict | None = None
         self._jwks_url = f"https://{settings.CLERK_DOMAIN}/.well-known/jwks.json"
 
     async def _fetch_jwks(self) -> dict:
@@ -53,7 +54,7 @@ class ClerkJWTVerifier:
             kid = unverified_header.get("kid")
 
             # Find matching key
-            rsa_key = None
+            rsa_key: Any = None
             for key in jwks.get("keys", []):
                 if key.get("kid") == kid:
                     rsa_key = jwt.algorithms.RSAAlgorithm.from_jwk(key)
@@ -80,26 +81,26 @@ class ClerkJWTVerifier:
 
             # Extract user info
             return ClerkUser(
-                clerk_id=payload.get("sub"),
-                email=payload.get("email"),
-                name=payload.get("name"),
+                clerk_id=cast(str, payload.get("sub")),
+                email=cast(str | None, payload.get("email")),
+                name=cast(str | None, payload.get("name")),
             )
 
-        except jwt.ExpiredSignatureError:
+        except jwt.ExpiredSignatureError as exc:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Token has expired"
-            )
+                detail="Token has expired",
+            ) from exc
         except jwt.InvalidTokenError as e:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail=f"Invalid token: {str(e)}"
-            )
-        except httpx.HTTPError:
+                detail=f"Invalid token: {str(e)}",
+            ) from e
+        except httpx.HTTPError as exc:
             raise HTTPException(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Unable to verify token"
-            )
+                detail="Unable to verify token",
+            ) from exc
 
 
 # Global verifier instance
@@ -107,7 +108,7 @@ clerk_verifier = ClerkJWTVerifier()
 
 
 async def get_clerk_user(
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)
+    credentials: HTTPAuthorizationCredentials | None = Depends(security)
 ) -> ClerkUser:
     """Dependency that extracts and validates Clerk user from JWT."""
     if credentials is None:
@@ -149,9 +150,9 @@ async def get_current_user(
 
 
 async def get_optional_user(
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
     db: AsyncSession = Depends(get_db),
-) -> Optional[User]:
+) -> User | None:
     """
     Dependency that returns the current user if authenticated, None otherwise.
     Useful for endpoints that work both with and without auth.

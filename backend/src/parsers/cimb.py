@@ -4,7 +4,6 @@ RinggitSense - CIMB statement parser
 import csv
 import io
 from decimal import Decimal
-from typing import Optional
 
 from src.parsers.base import (
     BaseParser,
@@ -68,7 +67,7 @@ class CIMBParser(BaseParser):
                 )
 
             # Create column mapping
-            col_map = self._map_columns(reader.fieldnames)
+            col_map = self._map_columns(list(reader.fieldnames))
 
             if not col_map.get("date"):
                 errors.append("Could not find date column in CSV")
@@ -155,7 +154,7 @@ class CIMBParser(BaseParser):
         row: dict[str, str],
         col_map: dict[str, str],
         row_num: int
-    ) -> Optional[ParsedTransaction]:
+    ) -> ParsedTransaction | None:
         """Parse a single CSV row into a transaction."""
         # Get date
         date_str = row.get(col_map.get("date", ""), "").strip()
@@ -201,14 +200,14 @@ class CIMBParser(BaseParser):
             return None
 
         # Get balance
-        balance: Optional[Decimal] = None
+        balance: Decimal | None = None
         if "balance" in col_map:
             balance_str = row.get(col_map["balance"], "").strip()
             if balance_str:
                 balance = self._parse_amount(balance_str)
 
         # Get reference
-        reference: Optional[str] = None
+        reference: str | None = None
         if "reference" in col_map:
             reference = row.get(col_map["reference"], "").strip() or None
 

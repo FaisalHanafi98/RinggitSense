@@ -3,7 +3,8 @@ RinggitSense - Base SQLAlchemy model configuration
 """
 import uuid
 from datetime import datetime
-from sqlalchemy import Column, DateTime
+
+from sqlalchemy import DateTime
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 

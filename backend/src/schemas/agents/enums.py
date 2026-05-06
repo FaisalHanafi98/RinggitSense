@@ -4,10 +4,10 @@ RinggitSense - Shared enums for agent data contracts.
 Canonical source of truth for all categorical values used across
 the 6-agent pipeline (AG-01 through AG-06).
 """
-from enum import Enum
+from enum import StrEnum
 
 
-class TransactionCategory(str, Enum):
+class TransactionCategory(StrEnum):
     """Transaction categories assigned by AG-01 Categorizer."""
     FOOD = "FOOD"
     TRANSPORT = "TRANSPORT"
@@ -21,14 +21,14 @@ class TransactionCategory(str, Enum):
     OTHER = "OTHER"
 
 
-class DebtTier(str, Enum):
+class DebtTier(StrEnum):
     """Malaysian three-tier debt classification by AG-02 Debt Detector."""
     FORMAL = "FORMAL"      # PTPTN, bank loans, hire purchase, mortgages, credit cards
     BNPL = "BNPL"          # SPayLater, GrabPayLater, Atome, Split
     HUTANG = "HUTANG"      # Informal borrowing between family/friends
 
 
-class PatternType(str, Enum):
+class PatternType(StrEnum):
     """Spending pattern types identified by AG-03 Pattern Analyzer."""
     TEMPORAL = "TEMPORAL"        # Weekend surges, payday effects, month-end
     BUNDLE = "BUNDLE"            # Co-occurring expenses
@@ -37,14 +37,14 @@ class PatternType(str, Enum):
     ANOMALY = "ANOMALY"          # Spending spikes, new merchants
 
 
-class Trend(str, Enum):
+class Trend(StrEnum):
     """Trend direction for category-level predictions by AG-04."""
     RISING = "RISING"
     STABLE = "STABLE"
     FALLING = "FALLING"
 
 
-class AdviceCategory(str, Enum):
+class AdviceCategory(StrEnum):
     """Advice categories from AG-06 Advisor."""
     SPENDING = "SPENDING"
     SAVING = "SAVING"
@@ -53,21 +53,21 @@ class AdviceCategory(str, Enum):
     BEHAVIOR = "BEHAVIOR"
 
 
-class Difficulty(str, Enum):
+class Difficulty(StrEnum):
     """Difficulty level for financial recommendations."""
     EASY = "EASY"
     MEDIUM = "MEDIUM"
     HARD = "HARD"
 
 
-class ConfidenceLevel(str, Enum):
+class ConfidenceLevel(StrEnum):
     """Qualitative confidence level for predictions."""
     HIGH = "high"
     MEDIUM = "medium"
     LOW = "low"
 
 
-class DebtDirection(str, Enum):
+class DebtDirection(StrEnum):
     """Direction of informal debt (HUTANG)."""
     OWE = "OWE"      # User owes someone
     OWED = "OWED"    # Someone owes user

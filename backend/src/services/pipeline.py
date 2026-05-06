@@ -7,8 +7,8 @@ Upload returns immediately; frontend polls GET /jobs/{id} for status.
 import asyncio
 import logging
 import uuid
-from datetime import datetime, timezone
-from typing import Optional
+from datetime import UTC, datetime
+from typing import Any, cast
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -77,7 +77,7 @@ async def run_pipeline(run_id: uuid.UUID) -> None:
 
         # Mark as running
         run.status = "running"
-        run.started_at = datetime.now(timezone.utc)
+        run.started_at = datetime.now(UTC)
         await db.commit()
 
         # Load transactions for this source
@@ -87,11 +87,11 @@ async def run_pipeline(run_id: uuid.UUID) -> None:
                 Transaction.source_id == run.source_id,
             )
         )
-        transactions = txn_result.scalars().all()
+        transactions = list(txn_result.scalars().all())
 
         if not transactions:
             run.status = "completed"
-            run.completed_at = datetime.now(timezone.utc)
+            run.completed_at = datetime.now(UTC)
             run.error_message = "No transactions found for this source"
             await db.commit()
             return
@@ -120,7 +120,7 @@ async def run_pipeline(run_id: uuid.UUID) -> None:
                 run.status = "failed"
                 run.error_message = str(e)
                 run.error_stage = stage_name
-                run.completed_at = datetime.now(timezone.utc)
+                run.completed_at = datetime.now(UTC)
                 run.stage_results = stage_results
                 await db.commit()
                 return
@@ -128,7 +128,7 @@ async def run_pipeline(run_id: uuid.UUID) -> None:
         # All stages completed
         run.status = "completed"
         run.current_stage = None
-        run.completed_at = datetime.now(timezone.utc)
+        run.completed_at = datetime.now(UTC)
         await db.commit()
 
 
@@ -185,7 +185,7 @@ async def _run_categorizer(
                 date=str(txn.transaction_date),
             )
             txn.category = result.category.value
-            txn.category_confidence = result.confidence
+            cast(Any, txn).category_confidence = result.confidence
             txn.subcategory = result.subcategory
             txn.merchant_name = result.merchant_name
             categorized_count += 1

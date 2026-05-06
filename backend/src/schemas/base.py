@@ -1,10 +1,11 @@
 """
 RinggitSense - Base schemas for API responses
 """
-from datetime import datetime
-from typing import Any, Generic, Optional, TypeVar
-from pydantic import BaseModel, Field
 import uuid
+from datetime import datetime
+from typing import Any, Generic, TypeVar
+
+from pydantic import BaseModel, Field
 
 T = TypeVar("T")
 
@@ -26,7 +27,7 @@ class ErrorDetail(BaseModel):
     """Error details."""
     code: str
     message: str
-    details: Optional[dict[str, Any]] = None
+    details: dict[str, Any] | None = None
 
 
 class ErrorResponse(BaseModel):

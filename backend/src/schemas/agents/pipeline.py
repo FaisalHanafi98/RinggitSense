@@ -9,13 +9,13 @@ from datetime import datetime
 
 from pydantic import BaseModel, ValidationError
 
+from src.schemas.agents.advisor import AdviceResponse
 from src.schemas.agents.base import AgentContractViolation, HandoffRecord
-from src.schemas.agents.categorizer import CategorizerOutput, CategorizerBatchOutput
+from src.schemas.agents.categorizer import CategorizerBatchOutput, CategorizerOutput
 from src.schemas.agents.debt_detector import DebtDetectorOutput, DebtSummary
 from src.schemas.agents.pattern_analyzer import PatternResult
 from src.schemas.agents.predictor import PredictionResult
 from src.schemas.agents.query import QueryResponse
-from src.schemas.agents.advisor import AdviceResponse
 
 # Maps (from_agent, to_agent) -> expected output type from from_agent
 HANDOFF_CONTRACTS: dict[tuple[str, str], type[BaseModel]] = {

@@ -17,7 +17,6 @@ import pytest
 
 from src.schemas.agents.enums import PatternType
 
-
 GOLDEN_DIR = Path(__file__).parent / "fixtures" / "golden"
 
 
@@ -632,7 +631,7 @@ class TestGoldenDatasetPatterns:
     """Validate expected_patterns.json structure and coverage."""
 
     def setup_method(self):
-        with open(GOLDEN_DIR / "expected_patterns.json", "r") as f:
+        with open(GOLDEN_DIR / "expected_patterns.json") as f:
             self.expected = json.load(f)
 
     def test_golden_dataset_has_recurring_expenses(self):

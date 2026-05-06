@@ -4,12 +4,12 @@ RinggitSense - Transaction model
 import uuid
 from datetime import date
 from decimal import Decimal
-from typing import Optional
-from sqlalchemy import String, Text, Date, Boolean, Numeric, JSON, ForeignKey
+
+from sqlalchemy import JSON, Boolean, Date, ForeignKey, Numeric, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.models.base import Base, UUIDMixin, TimestampMixin
+from src.models.base import Base, TimestampMixin, UUIDMixin
 
 
 class Transaction(Base, UUIDMixin, TimestampMixin):
@@ -23,7 +23,7 @@ class Transaction(Base, UUIDMixin, TimestampMixin):
         nullable=False,
         index=True
     )
-    source_id: Mapped[Optional[uuid.UUID]] = mapped_column(
+    source_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True),
         ForeignKey("data_sources.id", ondelete="SET NULL"),
         nullable=True
@@ -33,26 +33,26 @@ class Transaction(Base, UUIDMixin, TimestampMixin):
     transaction_date: Mapped[date] = mapped_column(Date, nullable=False, index=True)
     amount: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False)
-    original_description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    original_description: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     # Categorization (from AG-01 Categorizer)
-    category: Mapped[Optional[str]] = mapped_column(String(50), nullable=True, index=True)
-    category_confidence: Mapped[Optional[Decimal]] = mapped_column(Numeric(3, 2), nullable=True)
-    subcategory: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
-    merchant_name: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
+    category: Mapped[str | None] = mapped_column(String(50), nullable=True, index=True)
+    category_confidence: Mapped[Decimal | None] = mapped_column(Numeric(3, 2), nullable=True)
+    subcategory: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    merchant_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
 
     # Debt detection (from AG-02 Debt Detector)
     is_debt_related: Mapped[bool] = mapped_column(Boolean, default=False)
-    debt_tier: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
-    debt_id: Mapped[Optional[uuid.UUID]] = mapped_column(
+    debt_tier: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    debt_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True),
         ForeignKey("debts.id", ondelete="SET NULL"),
         nullable=True
     )
 
     # Metadata
-    raw_data: Mapped[Optional[dict]] = mapped_column(JSON, nullable=True)
-    user_comment: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    raw_data: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    user_comment: Mapped[str | None] = mapped_column(Text, nullable=True)
     is_recurring: Mapped[bool] = mapped_column(Boolean, default=False)
 
     # Relationships

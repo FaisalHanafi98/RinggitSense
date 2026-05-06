@@ -5,13 +5,10 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from datetime import date
 from decimal import Decimal
-from enum import Enum
-from typing import BinaryIO, Optional
-import csv
-import io
+from enum import StrEnum
 
 
-class TransactionType(str, Enum):
+class TransactionType(StrEnum):
     """Transaction type (debit or credit)."""
     DEBIT = "debit"
     CREDIT = "credit"
@@ -24,8 +21,8 @@ class ParsedTransaction:
     description: str
     amount: Decimal
     transaction_type: TransactionType
-    balance: Optional[Decimal] = None
-    reference: Optional[str] = None
+    balance: Decimal | None = None
+    reference: str | None = None
     raw_data: dict = field(default_factory=dict)
 
     @property
@@ -41,11 +38,11 @@ class ParserResult:
     """Result of parsing a bank statement."""
     transactions: list[ParsedTransaction]
     bank_name: str
-    account_number: Optional[str] = None
-    statement_period_start: Optional[date] = None
-    statement_period_end: Optional[date] = None
-    opening_balance: Optional[Decimal] = None
-    closing_balance: Optional[Decimal] = None
+    account_number: str | None = None
+    statement_period_start: date | None = None
+    statement_period_end: date | None = None
+    opening_balance: Decimal | None = None
+    closing_balance: Decimal | None = None
     errors: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
 
@@ -80,21 +77,24 @@ class BaseParser(ABC):
         file_ext = filename.lower().split(".")[-1] if filename else ""
 
         if isinstance(file_content, bytes):
+            raw_content = file_content
             # Try to decode as text for CSV
             try:
-                file_content = file_content.decode("utf-8")
+                text_content = raw_content.decode("utf-8")
             except UnicodeDecodeError:
                 try:
-                    file_content = file_content.decode("latin-1")
+                    text_content = raw_content.decode("latin-1")
                 except UnicodeDecodeError:
                     # Binary content (PDF)
                     if file_ext == "pdf" or not file_ext:
-                        return self.parse_pdf(file_content)
-                    raise ValueError("Unable to decode file content")
+                        return self.parse_pdf(raw_content)
+                    raise ValueError("Unable to decode file content") from None
+        else:
+            text_content = file_content
 
         # Text content - assume CSV
         if file_ext == "csv" or not file_ext:
-            return self.parse_csv(file_content)
+            return self.parse_csv(text_content)
         elif file_ext == "pdf":
             raise ValueError("PDF content should be bytes, not string")
         else:

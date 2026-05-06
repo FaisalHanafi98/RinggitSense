@@ -14,7 +14,6 @@ from src.schemas.agents.categorizer import (
     CategorizerBatchResultItem,
     CategorizerOutput,
 )
-from src.schemas.agents.enums import TransactionCategory
 
 logger = logging.getLogger(__name__)
 
@@ -144,7 +143,7 @@ class CategorizerAgent(BaseAgent):
         )
 
         elapsed_ms = int((time.monotonic() - start_time) * 1000)
-        raw = self._parse_json_response(message.content[0].text)
+        raw = self._parse_json_response(self._first_text_block(message))
 
         results: list[CategorizerBatchResultItem] = []
         error_count = 0

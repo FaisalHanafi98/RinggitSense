@@ -2,11 +2,12 @@
 RinggitSense API - Malaysian AI-Powered Finance Tracker
 """
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.config import settings
-from src.routers import users_router, transactions_router, jobs_router
+from src.routers import jobs_router, transactions_router, users_router
 
 
 @asynccontextmanager
