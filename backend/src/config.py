@@ -2,6 +2,7 @@
 RinggitSense Configuration - Environment settings and constants
 """
 from typing import List
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -44,6 +45,20 @@ class Settings(BaseSettings):
     # File Upload
     MAX_UPLOAD_SIZE_MB: int = 10
     ALLOWED_EXTENSIONS: List[str] = ["pdf", "csv"]
+
+    @model_validator(mode="after")
+    def validate_production_settings(self) -> "Settings":
+        """Enforce critical settings in production."""
+        if self.ENVIRONMENT == "production":
+            if self.DEBUG:
+                raise ValueError("DEBUG must be False in production")
+            if "change-me" in self.SECRET_KEY or len(self.SECRET_KEY) < 32:
+                raise ValueError("SECRET_KEY must be a strong random key (32+ chars) in production")
+            if "your-domain" in self.CLERK_DOMAIN:
+                raise ValueError("CLERK_DOMAIN must be configured in production")
+            if any(o.startswith("http://localhost") for o in self.CORS_ORIGINS):
+                raise ValueError("CORS_ORIGINS must not contain localhost in production")
+        return self
 
 
 settings = Settings()
