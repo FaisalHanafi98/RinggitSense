@@ -4,7 +4,7 @@ RinggitSense - AG-04 Predictor data contracts.
 Input/output schemas for the financial prediction agent.
 Model: claude-sonnet-4 | Temperature: 0.3
 """
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from src.schemas.agents.base import BaseAgentInput
 from src.schemas.agents.enums import Trend
@@ -35,6 +35,13 @@ class ConfidenceInterval(BaseModel):
     """90% confidence interval bounds."""
     low: float = Field(description="Lower bound (90% confidence)")
     high: float = Field(description="Upper bound (90% confidence)")
+
+    @model_validator(mode="after")
+    def validate_bounds(self) -> "ConfidenceInterval":
+        """Ensure the lower confidence bound does not exceed the upper bound."""
+        if self.low > self.high:
+            raise ValueError("confidence_interval.low must be <= confidence_interval.high")
+        return self
 
 
 class CategoryPrediction(BaseModel):

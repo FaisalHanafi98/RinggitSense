@@ -334,12 +334,22 @@ class TestPipelineService:
     async def test_execute_stage_unimplemented_returns_skipped(self):
         from src.services.pipeline import _execute_stage
 
-        # AG-04 through AG-06 are not yet implemented — use AG-04 as the stub
+        # AG-05 and AG-06 are not yet implemented — use AG-05 as the stub
         result = await _execute_stage(
-            "AG-04", "predictor", [], {}, AsyncMock()
+            "AG-05", "query", [], {}, AsyncMock()
         )
         assert result["status"] == "skipped"
         assert "not yet implemented" in result["reason"]
+
+    @pytest.mark.asyncio
+    async def test_execute_stage_predictor_no_transactions(self):
+        from src.services.pipeline import _execute_stage
+
+        result = await _execute_stage(
+            "AG-04", "predictor", [], {"pattern_analyzer": {}}, AsyncMock()
+        )
+        assert result["status"] == "skipped"
+        assert "no transactions" in result["reason"]
 
     @pytest.mark.asyncio
     async def test_execute_stage_debt_detector_no_transactions(self):
@@ -395,6 +405,81 @@ class TestPipelineService:
         assert result["pattern_count"] == 1
         assert result["hidden_cost_total"] == 183.80
         assert result["patterns"][0]["type"] == "HIDDEN_COST"
+
+    @pytest.mark.asyncio
+    @patch("src.agents.predictor.PredictorAgent")
+    async def test_execute_stage_predictor_returns_prediction(self, mock_agent_cls):
+        from src.services.pipeline import _execute_stage
+
+        mock_category = MagicMock()
+        mock_category.category = "FOOD"
+        mock_category.predicted = 1080.00
+        mock_category.trend.value = "RISING"
+
+        mock_result = MagicMock()
+        mock_result.total_predicted = 1850.00
+        mock_result.confidence_interval.low = 1600.00
+        mock_result.confidence_interval.high = 2100.00
+        mock_result.by_category = [mock_category]
+        mock_result.assumptions = ["Based on synthetic 3-month summaries."]
+        mock_result.risks = ["Past patterns do not guarantee future results."]
+
+        mock_agent = MagicMock()
+        mock_agent.predict.return_value = mock_result
+        mock_agent_cls.return_value = mock_agent
+
+        txn = MagicMock()
+        txn.id = uuid.uuid4()
+        txn.description = "NASI KANDAR PELITA"
+        txn.amount = Decimal("12.50")
+        txn.transaction_date = date(2026, 1, 15)
+        txn.category = "FOOD"
+        txn.subcategory = "restaurant"
+
+        pattern_context = {
+            "status": "completed",
+            "patterns": [{"type": "TREND", "name": "Rising Food Spend"}],
+        }
+
+        result = await _execute_stage(
+            "AG-04",
+            "predictor",
+            [txn],
+            {"pattern_analyzer": pattern_context},
+            AsyncMock(),
+        )
+
+        assert result["status"] == "completed"
+        assert result["total_predicted"] == 1850.00
+        assert result["confidence_interval"]["low"] == 1600.00
+        assert result["by_category"][0]["trend"] == "RISING"
+        mock_agent.predict.assert_called_once()
+        assert mock_agent.predict.call_args.kwargs["pattern_context"] == pattern_context
+
+    @pytest.mark.asyncio
+    @patch("src.agents.predictor.PredictorAgent")
+    async def test_execute_stage_predictor_failure_propagates(self, mock_agent_cls):
+        from src.services.pipeline import _execute_stage
+
+        mock_agent = MagicMock()
+        mock_agent.predict.side_effect = ValueError("Could not parse JSON")
+        mock_agent_cls.return_value = mock_agent
+
+        txn = MagicMock()
+        txn.id = uuid.uuid4()
+        txn.description = "NASI KANDAR PELITA"
+        txn.amount = Decimal("12.50")
+        txn.transaction_date = date(2026, 1, 15)
+        txn.category = "FOOD"
+
+        with pytest.raises(ValueError, match="Could not parse JSON"):
+            await _execute_stage(
+                "AG-04",
+                "predictor",
+                [txn],
+                {"pattern_analyzer": {}},
+                AsyncMock(),
+            )
 
     @pytest.mark.asyncio
     @patch("src.agents.debt_detector.DebtDetectorAgent")
@@ -538,14 +623,16 @@ class TestPipelineService:
         assert "Could not parse JSON" in result["errors"][0]["error"]
 
     @pytest.mark.asyncio
+    @patch("src.services.pipeline._run_predictor")
     @patch("src.services.pipeline._run_pattern_analyzer")
-    async def test_run_pipeline_marks_running_then_completed(self, mock_pa):
+    async def test_run_pipeline_marks_running_then_completed(self, mock_pa, mock_predictor):
         """Full pipeline run with all stages stubbed.
 
         AG-01 is skipped naturally (transaction already categorized).
         AG-02 swallows per-transaction errors internally.
         AG-03 is patched because it makes a batch Anthropic call with no key in CI.
-        AG-04..06 are stubbed by the pipeline itself (not yet implemented).
+        AG-04 is patched because it makes a batch Anthropic call with no key in CI.
+        AG-05..06 are stubbed by the pipeline itself (not yet implemented).
         """
         mock_pa.return_value = {
             "status": "completed",
@@ -553,6 +640,14 @@ class TestPipelineService:
             "hidden_cost_total": 0.0,
             "summary": "No patterns detected.",
             "patterns": [],
+        }
+        mock_predictor.return_value = {
+            "status": "completed",
+            "total_predicted": 0.0,
+            "confidence_interval": {"low": 0.0, "high": 0.0},
+            "by_category": [],
+            "assumptions": ["Synthetic test pipeline run."],
+            "risks": ["Past patterns do not guarantee future results."],
         }
 
         from src.services.pipeline import run_pipeline

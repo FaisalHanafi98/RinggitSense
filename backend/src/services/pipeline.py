@@ -154,6 +154,9 @@ async def _execute_stage(
     if agent_id == "AG-03":
         return await _run_pattern_analyzer(transactions, prior_results)
 
+    if agent_id == "AG-04":
+        return await _run_predictor(transactions, prior_results)
+
     # Stub for unimplemented agents — returns metadata, doesn't fail
     return {
         "status": "skipped",
@@ -297,3 +300,75 @@ async def _run_debt_detector(
         "errors": errors,
         "total": len(transactions),
     }
+
+
+async def _run_predictor(
+    transactions: list[Transaction],
+    prior_results: dict,
+) -> dict:
+    """Run AG-04 Predictor after AG-03 pattern analysis.
+
+    AG-04 receives month/category summaries derived from categorized
+    transactions plus the AG-03 result as context. It does not mutate
+    transaction data.
+    """
+    from src.agents.predictor import PredictorAgent
+
+    if not transactions:
+        return {"status": "skipped", "reason": "no transactions to forecast"}
+
+    monthly_totals: dict[tuple[str, str], float] = {}
+    latest_month = ""
+    for txn in transactions:
+        month = str(txn.transaction_date)[:7]
+        category = txn.category or "OTHER"
+        latest_month = max(latest_month, month)
+        key = (month, category)
+        monthly_totals[key] = monthly_totals.get(key, 0.0) + float(txn.amount)
+
+    history = [
+        {
+            "month": month,
+            "category": category,
+            "total": round(total, 2),
+        }
+        for (month, category), total in sorted(monthly_totals.items())
+    ]
+
+    prediction_month = _next_month(latest_month)
+    pattern_context = prior_results.get("pattern_analyzer")
+
+    agent = PredictorAgent()
+    result = agent.predict(
+        historical_transactions=history,
+        prediction_month=prediction_month,
+        pattern_context=pattern_context,
+    )
+
+    return {
+        "status": "completed",
+        "prediction_month": prediction_month,
+        "total_predicted": result.total_predicted,
+        "confidence_interval": {
+            "low": result.confidence_interval.low,
+            "high": result.confidence_interval.high,
+        },
+        "by_category": [
+            {
+                "category": item.category,
+                "predicted": item.predicted,
+                "trend": item.trend.value,
+            }
+            for item in result.by_category
+        ],
+        "assumptions": result.assumptions,
+        "risks": result.risks,
+    }
+
+
+def _next_month(month: str) -> str:
+    """Return the next month after a YYYY-MM string."""
+    year, month_number = (int(part) for part in month.split("-"))
+    if month_number == 12:
+        return f"{year + 1}-01"
+    return f"{year}-{month_number + 1:02d}"
