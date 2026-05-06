@@ -1,0 +1,19 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Local Codex/Claude state
+.claude/settings.local.json
+.memsearch/
+
+# Python generated files
+__pycache__/
+*.py[cod]
+backend/alembic/**/__pycache__/
+
+# Frontend generated files
+frontend/node_modules/
+frontend/dist/
+frontend/.env.production
