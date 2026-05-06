@@ -11,6 +11,7 @@ from src.models.prediction import Prediction
 from src.models.advice import Advice
 from src.models.pattern import Pattern
 from src.models.audit_log import AuditLog
+from src.models.pipeline_run import PipelineRun
 
 __all__ = [
     "Base",
@@ -25,4 +26,5 @@ __all__ = [
     "Advice",
     "Pattern",
     "AuditLog",
+    "PipelineRun",
 ]

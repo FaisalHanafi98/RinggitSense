@@ -8,7 +8,8 @@ def test_all_models_import():
     """Test that all models can be imported."""
     from src.models import (
         Base, User, DataSource, Transaction,
-        Debt, DebtItem, Prediction, Advice, Pattern, AuditLog
+        Debt, DebtItem, Prediction, Advice, Pattern, AuditLog,
+        PipelineRun,
     )
     assert Base is not None
     assert User is not None
@@ -20,13 +21,15 @@ def test_all_models_import():
     assert Advice is not None
     assert Pattern is not None
     assert AuditLog is not None
+    assert PipelineRun is not None
 
 
 def test_model_tablenames():
     """Test that models have correct table names."""
     from src.models import (
         User, DataSource, Transaction,
-        Debt, DebtItem, Prediction, Advice, Pattern, AuditLog
+        Debt, DebtItem, Prediction, Advice, Pattern, AuditLog,
+        PipelineRun,
     )
 
     expected = {
@@ -39,6 +42,7 @@ def test_model_tablenames():
         Advice: "advice",
         Pattern: "patterns",
         AuditLog: "audit_log",
+        PipelineRun: "pipeline_runs",
     }
 
     for model, tablename in expected.items():
