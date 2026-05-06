@@ -1,4 +1,4 @@
-> **GOVERNANCE NOTICE**: This project-level CLAUDE.md operates under the authority of the root CLAUDE.md. In case of conflict, root CLAUDE.md (Section 0.2 Override Hierarchy) prevails. This file may define project-specific constraints but may not override root governance.
+> **GOVERNANCE NOTICE**: This project-level AGENTS.md operates under the authority of the root AGENTS.md. In case of conflict, root AGENTS.md (Section 0.2 Override Hierarchy) prevails. This file may define project-specific constraints but may not override root governance.
 
 ---
 
@@ -45,7 +45,7 @@ All code, data, and outputs MUST use Malaysian context:
 
 ### 2. Six-Agent Architecture
 
-The AI layer consists of exactly 6 specialized Claude agents:
+The AI layer consists of exactly 6 specialized Codex agents:
 
 | Agent | Responsibility | Definition |
 |-------|---------------|------------|
@@ -92,7 +92,7 @@ TDD is MANDATORY:
 
 ```
 RinggitSense/
-├── CLAUDE.md                    # This file
+├── AGENTS.md                    # This file
 ├── agents/                      # AI agent specifications
 │   ├── AGENT_INDEX.md
 │   ├── definitions/             # Individual agent specs
@@ -117,7 +117,7 @@ RinggitSense/
 | Frontend | React 18 / TypeScript |
 | Database | PostgreSQL 15+ |
 | Cache | Redis 7+ |
-| AI | Claude Sonnet 4 |
+| AI | Codex Sonnet 4 |
 | Deploy | AWS (ECS Fargate) |
 
 ---
