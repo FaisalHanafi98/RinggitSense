@@ -62,10 +62,13 @@ serializes the stored value unchanged.
 
 ## 3. Working Agreements
 
-1. **One module = one branch = one merge.** Branch naming:
+1. **One module = one branch = one merge to `dev`.** Branch naming:
    `refactor/m<id>-<slug>`. Flow per module:
-   branch → implement → gates → merge to `main` → **stop and report** → approval →
-   next module. No module starts before its predecessor is merged and approved.
+   branch off `dev` → implement → gates → merge to `dev` → **stop and report**
+   → approval → next module. No module starts before its predecessor is merged
+   and approved. `dev` → `main` promotion happens at integration checkpoints
+   (§12 of the execution plan) or on owner demand. `main` is deployment-connected
+   and only receives promoted, fully-gated state.
 2. **Gates before merge** (tiers defined in the roadmap §Test Strategy):
    lint → types (CI authoritative until M2.3) → build → unit → integration (once
    M0.2 exists) → coverage ≥ 90.42% → perf evidence for T3 modules → docs updated →

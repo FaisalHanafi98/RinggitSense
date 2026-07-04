@@ -2,7 +2,7 @@
 
 > Living engineering state file. Overwrite this in place as execution advances.
 > Not a summary — the single source of truth for "where are we right now."
-> Last updated: 2026-07-04 (M0.2 merged to main, pushed to remote)
+> Last updated: 2026-07-04 (branch structure change: dev/main split)
 
 ---
 
@@ -17,78 +17,60 @@ Current Epic:
 E0 — Regression Safety Net
 
 Current Module:
-M0.2 — Integration test harness on real PostgreSQL  [MERGED]
+M0.2 — Integration test harness on real PostgreSQL  [MERGED to dev + main]
 
 Status:
-MERGED to main (merge commit 24b92c3, --no-ff) · verified stable on main · pushed to remote
-Remote renamed from `origin` to `main` (2026-07-04, owner directive)
+M0.2 merged (24b92c3) · branch structure changed to dev/main split · pushed to origin
+
+Branch Structure (2026-07-04, owner directive):
+  - main  = production-grade, deployment-connected. Only receives promotions
+    from dev at integration checkpoints (CP-0…CP-6) when all available gates
+    pass (unit, integration, lint, types, + performance/frontend/security
+    as those gates are built in later waves).
+  - dev   = sandbox, primary working branch. Module branches
+    (refactor/m<x>-<slug>) branch off dev and merge to dev (owner-approved
+    per module, same C2 discipline). This is where active work lives.
+  - Promotion dev → main happens at integration checkpoints or on owner
+    demand. See EXECUTION_PLAN_v1.md §4 and §14 for the updated protocol.
+
+Worktree layout:
+  - RinggitSense      (this directory) → on dev   [primary, where we work]
+  - RinggitSense-prod (sibling)         → on main [promotion-only]
+
+Remote: origin (renamed back from `main` to avoid branch-name ambiguity)
 
 Baseline tag:
-pre-refactor-baseline -> c83e2c6  (program-wide revert point)
+pre-refactor-baseline -> c83e2c6  (program-wide revert point, on main)
 
-Previous module:
-M0.1 — Baseline freeze & working agreements  [MERGED to main at e689d92; pushed to origin]
+Completed modules:
+  M0.1 — Baseline freeze & working agreements  [MERGED to main at e689d92]
+  M0.2 — Integration test harness               [MERGED to main at 24b92c3]
+  Both are on main AND dev (dev was branched from main after M0.2).
 
 ---
 
-Completed (M0.2):
-- backend/tests/conftest.py: extended with integration-tier fixtures
-  - pytest_configure: registers "integration" marker
-  - test_database_url: session-scoped, skips if TEST_DATABASE_URL unset (C1)
-  - integration_engine: session-scoped async engine, create_all/drop_all, skips on unreachable DB
-  - integration_db: function-scoped session with join_transaction_mode="create_savepoint"
-    (per-test isolation via outer-transaction rollback; app commits release SAVEPOINT only)
-- backend/tests/integration/__init__.py: new package
-- backend/tests/integration/conftest.py:
-  - _skip_if_no_test_db: autouse fixture, skips when TEST_DATABASE_URL unset (C1)
-  - test_user: creates a real User row in the test DB
-  - client: async httpx client with get_current_user + get_db overridden
-- backend/tests/integration/test_round_trip.py: 4 integration tests
-  - test_create_user_insert_transaction_list_via_api: the trivial round-trip acceptance test
-  - test_list_empty_for_fresh_user: empty list for new user
-  - test_transaction_is_user_scoped: multi-tenancy isolation check
-  - test_transaction_persists_within_test: DB write readable via fresh select
-- backend/pyproject.toml: registered "integration" marker
-- .github/workflows/ci.yml: added TEST_DATABASE_URL env var + integration test step
+Completed (branch structure change, 2026-07-04):
+- Remote renamed: main → origin (eliminates refname ambiguity)
+- dev branch created off main (at 3b69e13, post-M0.2)
+- dev pushed to origin with upstream tracking
+- Prod worktree created: ../RinggitSense-prod on main (promotion-only)
+- CI workflow updated: triggers on push/PR to both main and dev
+- EXECUTION_PLAN_v1.md updated: C2, §4 execution protocol, §14 quality gates,
+  new §4.1 branch structure documentation
+- refactor-baseline.md updated: working agreement #1 reflects dev/main split
+- CURRENT_MODULE_STATE.md updated (this file)
 
 Verification (local, 2026-07-04):
-- pytest tests/: 263 passed, 4 skipped, 90.42% coverage (unchanged from baseline)
-  - 4 skipped = integration tests (TEST_DATABASE_URL unset locally — C1 auto-skip)
-- pytest tests/ -m "not integration": 263 passed, 4 deselected (unit suite clean)
-- pytest tests/integration/ -rs: 4 skipped with correct reason
+- git worktree list: two worktrees confirmed (dev + main)
+- git remote -v: origin (no ambiguity)
+- pytest tests/: 263 passed, 4 skipped, 90.42% coverage (unchanged)
 - ruff check . : All checks passed!
-- mypy: not run locally (CI-authoritative until M2.3)
-
-CI verification (pending CI run after push):
-- CI will run: pytest tests/integration/ -m integration --no-cov -v
-  against the existing Postgres 15 service with TEST_DATABASE_URL set
-- The 4 integration tests are expected to PASS in CI
-
-Remaining (this module):
-- Verify CI passes (integration tests green in CI for the first time)
-- Optional owner action: enable GitHub branch protection on main (manual, not scriptable)
-
-Blocked:
-- None. Module is closed.
-
-Regression Risk:
-- Low. Touches conftest.py (additive — existing anyio_backend fixture preserved),
-  pyproject.toml (additive marker), ci.yml (additive env var + step). Zero source
-  code changed. Unit suite verified unaffected: 263 passed, 90.42% coverage.
+- git status: clean on dev
 
 Next Action:
-- M0.2 is CLOSED. Next module is M0.3 (E2E pipeline test + amount-sign contract tests).
+- Branch structure change is complete. Next module is M0.3 (E2E pipeline test
+  + amount-sign contract tests), to be branched off dev and merged to dev.
 - Do NOT begin M0.3 until the owner explicitly says go.
-
-Quality Gate:
-- Lint: PASS (ruff "All checks passed!")
-- Types: pending CI (local mypy broken pre-existing — M2.3 fixes)
-- Build: N/A (no source code changed)
-- Unit tests: PASS (263 passed, 90.42% coverage, unchanged from baseline)
-- Integration: locally auto-skipped (C1); CI run pending push
-- Docs updated: YES (this file)
-- Worktree: CLEAN
-- Approval: APPROVED & MERGED (24b92c3)
 
 ---
 
@@ -100,9 +82,13 @@ Verification commands (backend venv is at backend/venv, Python 3.14 locally):
 
 Next module on deck (await owner go-ahead):
   M0.3 — E2E pipeline test + amount-sign contract tests
-  Branch: refactor/m0.3-e2e-pipeline-tests
+  Branch: refactor/m0.3-e2e-pipeline-tests (off dev, merges to dev)
   Files: backend/tests/integration/test_upload_pipeline_e2e.py,
          backend/tests/integration/test_amount_contract.py,
          docs/CONVENTIONS.md
   Acceptance: E2E green with today's behavior (xfails aside); convention doc reviewed.
   Gains: the regression net for E3, E4, E5, E6 — highest-leverage artifact in the program.
+
+Next promotion on deck (after M0.3 merges to dev):
+  CP-0: dev → main promotion (Wave 0 complete)
+  Gates at CP-0: unit (263+), integration (CI green), lint (ruff), types (CI mypy)
