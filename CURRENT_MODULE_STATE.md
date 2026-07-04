@@ -2,7 +2,7 @@
 
 > Living engineering state file. Overwrite this in place as execution advances.
 > Not a summary — the single source of truth for "where are we right now."
-> Last updated: 2026-07-04 (M0.2 implemented, awaiting merge approval)
+> Last updated: 2026-07-04 (M0.2 merged to main, pushed to remote)
 
 ---
 
@@ -17,13 +17,11 @@ Current Epic:
 E0 — Regression Safety Net
 
 Current Module:
-M0.2 — Integration test harness on real PostgreSQL  [IMPLEMENTED — AWAITING MERGE]
+M0.2 — Integration test harness on real PostgreSQL  [MERGED]
 
 Status:
-100% implemented on branch · verified locally (263 passed + 4 skipped, ruff clean) · CI run pending merge
-
-Branch:
-refactor/m0.2-integration-harness  (off main at 9da070f)
+MERGED to main (merge commit 24b92c3, --no-ff) · verified stable on main · pushed to remote
+Remote renamed from `origin` to `main` (2026-07-04, owner directive)
 
 Baseline tag:
 pre-refactor-baseline -> c83e2c6  (program-wide revert point)
@@ -61,18 +59,17 @@ Verification (local, 2026-07-04):
 - ruff check . : All checks passed!
 - mypy: not run locally (CI-authoritative until M2.3)
 
-CI verification (pending merge + push):
+CI verification (pending CI run after push):
 - CI will run: pytest tests/integration/ -m integration --no-cov -v
   against the existing Postgres 15 service with TEST_DATABASE_URL set
 - The 4 integration tests are expected to PASS in CI
 
 Remaining (this module):
-- MERGE branch refactor/m0.2-integration-harness -> main (needs owner confirmation)
-- PUSH to origin after merge
 - Verify CI passes (integration tests green in CI for the first time)
+- Optional owner action: enable GitHub branch protection on main (manual, not scriptable)
 
 Blocked:
-- Merge to main is gated on explicit owner approval (PDPA project rule: no auto-merge)
+- None. Module is closed.
 
 Regression Risk:
 - Low. Touches conftest.py (additive — existing anyio_backend fixture preserved),
@@ -80,18 +77,18 @@ Regression Risk:
   code changed. Unit suite verified unaffected: 263 passed, 90.42% coverage.
 
 Next Action:
-- STOP. Await owner instruction. On approval: merge to main, push, verify CI green,
-  then begin M0.3 (E2E pipeline test + amount-sign contract tests).
+- M0.2 is CLOSED. Next module is M0.3 (E2E pipeline test + amount-sign contract tests).
+- Do NOT begin M0.3 until the owner explicitly says go.
 
 Quality Gate:
 - Lint: PASS (ruff "All checks passed!")
 - Types: pending CI (local mypy broken pre-existing — M2.3 fixes)
 - Build: N/A (no source code changed)
 - Unit tests: PASS (263 passed, 90.42% coverage, unchanged from baseline)
-- Integration: locally auto-skipped (C1); CI run pending merge
+- Integration: locally auto-skipped (C1); CI run pending push
 - Docs updated: YES (this file)
-- Worktree: has uncommitted M0.2 changes (about to be committed)
-- Approval: PENDING (merge)
+- Worktree: CLEAN
+- Approval: APPROVED & MERGED (24b92c3)
 
 ---
 
@@ -101,7 +98,7 @@ Verification commands (backend venv is at backend/venv, Python 3.14 locally):
   # NOTE: run mypy in CI, not locally — local mypy exits 1 with no output (M2.3 fixes)
   # NOTE: integration tests auto-skip locally (TEST_DATABASE_URL unset per C1)
 
-Next module on deck (DO NOT START — await M0.2 merge + owner go-ahead):
+Next module on deck (await owner go-ahead):
   M0.3 — E2E pipeline test + amount-sign contract tests
   Branch: refactor/m0.3-e2e-pipeline-tests
   Files: backend/tests/integration/test_upload_pipeline_e2e.py,
