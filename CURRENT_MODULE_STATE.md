@@ -2,13 +2,13 @@
 
 > Living engineering state file. Overwrite this in place as execution advances.
 > Not a summary — the single source of truth for "where are we right now."
-> Last updated: 2026-07-04 (post-merge + branch streamline)
+> Last updated: 2026-07-04 (M0.2 implemented, awaiting merge approval)
 
 ---
 
 Current Program:
 Audit remediation & production-readiness refactor
-(basis: docs/plans/refactor-execution-plan.md)
+(basis: docs/plans/EXECUTION_PLAN_v1.md, supersedes refactor-execution-plan.md)
 
 Current Wave:
 Wave 0 — Regression Safety Net
@@ -17,84 +17,95 @@ Current Epic:
 E0 — Regression Safety Net
 
 Current Module:
-M0.1 — Baseline freeze & working agreements  [MERGED]
+M0.2 — Integration test harness on real PostgreSQL  [IMPLEMENTED — AWAITING MERGE]
 
 Status:
-MERGED to main (merge commit e689d92, --no-ff) · verified stable on main · NOT pushed to origin
-Branches streamlined to only main (2026-07-04) — see "Branch streamline" below
+100% implemented on branch · verified locally (263 passed + 4 skipped, ruff clean) · CI run pending merge
+
+Branch:
+refactor/m0.2-integration-harness  (off main at 9da070f)
 
 Baseline tag:
 pre-refactor-baseline -> c83e2c6  (program-wide revert point)
 
----
-
-Branch streamline (2026-07-04):
-- refactor/m0.1-baseline-freeze: deleted (was merged into main at e689d92; obsolete)
-- feat/ag-05-query-agent: deleted (local + origin; 1 unmerged commit 70226e6, 452 lines
-  AG-05 WIP). Tracked as deferred-from-refactor issue #1:
-  https://github.com/FaisalHanafi98/RinggitSense/issues/1
-  Recover via: git cherry-pick 70226e6
-- chore/deployment-config: deleted (local + origin; 1 unmerged commit 4f7b598, 589 lines
-  deployment config WIP). Tracked as deferred-from-refactor issue #2:
-  https://github.com/FaisalHanafi98/RinggitSense/issues/2
-  Recover via: git cherry-pick 4f7b598
-- Result: only `main` remains (local + origin). WIP commits remain in git's object
-  store, recoverable by SHA, referenced in the two issues above (per decision D4).
+Previous module:
+M0.1 — Baseline freeze & working agreements  [MERGED to main at e689d92; pushed to origin]
 
 ---
 
-Completed (this module):
-- Annotated git tag `pre-refactor-baseline` at c83e2c6
-- docs/plans/refactor-baseline.md  (baseline evidence, defect register B1-B4,
-  working agreements, decision log D1-D5, constraints C1/C2, module ledger)
-- docs/plans/refactor-execution-plan.md  (full roadmap committed into the repo)
-- CURRENT_MODULE_STATE.md  (this living state file)
-- Baseline evidence captured: 263 tests pass, 90.42% coverage, ruff clean
-- Committed on branch: c161c97 (docs), 4855493 (state file)
-- Merged to main: e689d92 (--no-ff merge commit)
+Completed (M0.2):
+- backend/tests/conftest.py: extended with integration-tier fixtures
+  - pytest_configure: registers "integration" marker
+  - test_database_url: session-scoped, skips if TEST_DATABASE_URL unset (C1)
+  - integration_engine: session-scoped async engine, create_all/drop_all, skips on unreachable DB
+  - integration_db: function-scoped session with join_transaction_mode="create_savepoint"
+    (per-test isolation via outer-transaction rollback; app commits release SAVEPOINT only)
+- backend/tests/integration/__init__.py: new package
+- backend/tests/integration/conftest.py:
+  - _skip_if_no_test_db: autouse fixture, skips when TEST_DATABASE_URL unset (C1)
+  - test_user: creates a real User row in the test DB
+  - client: async httpx client with get_current_user + get_db overridden
+- backend/tests/integration/test_round_trip.py: 4 integration tests
+  - test_create_user_insert_transaction_list_via_api: the trivial round-trip acceptance test
+  - test_list_empty_for_fresh_user: empty list for new user
+  - test_transaction_is_user_scoped: multi-tenancy isolation check
+  - test_transaction_persists_within_test: DB write readable via fresh select
+- backend/pyproject.toml: registered "integration" marker
+- .github/workflows/ci.yml: added TEST_DATABASE_URL env var + integration test step
 
-Verification on main (post-merge, 2026-07-04):
-- pytest: 263 passed, 90.42% coverage (identical to pre-merge)
-- ruff: All checks passed!
-- worktree: clean
+Verification (local, 2026-07-04):
+- pytest tests/: 263 passed, 4 skipped, 90.42% coverage (unchanged from baseline)
+  - 4 skipped = integration tests (TEST_DATABASE_URL unset locally — C1 auto-skip)
+- pytest tests/ -m "not integration": 263 passed, 4 deselected (unit suite clean)
+- pytest tests/integration/ -rs: 4 skipped with correct reason
+- ruff check . : All checks passed!
+- mypy: not run locally (CI-authoritative until M2.3)
+
+CI verification (pending merge + push):
+- CI will run: pytest tests/integration/ -m integration --no-cov -v
+  against the existing Postgres 15 service with TEST_DATABASE_URL set
+- The 4 integration tests are expected to PASS in CI
 
 Remaining (this module):
-- PUSH main to origin (separate owner-confirmed action — not auto-pushed)
-- Optional owner action: enable GitHub branch protection on main (manual, not scriptable here)
+- MERGE branch refactor/m0.2-integration-harness -> main (needs owner confirmation)
+- PUSH to origin after merge
+- Verify CI passes (integration tests green in CI for the first time)
 
 Blocked:
-- None. Module is closed.
+- Merge to main is gated on explicit owner approval (PDPA project rule: no auto-merge)
 
 Regression Risk:
-- None. Module is docs + a git tag only. Zero source/test/config files touched.
+- Low. Touches conftest.py (additive — existing anyio_backend fixture preserved),
+  pyproject.toml (additive marker), ci.yml (additive env var + step). Zero source
+  code changed. Unit suite verified unaffected: 263 passed, 90.42% coverage.
 
 Next Action:
-- M0.1 is CLOSED. Next module is M0.2 (integration test harness, CI-first per C1).
-- Do NOT begin M0.2 until the owner explicitly says go.
+- STOP. Await owner instruction. On approval: merge to main, push, verify CI green,
+  then begin M0.3 (E2E pipeline test + amount-sign contract tests).
 
 Quality Gate:
 - Lint: PASS (ruff "All checks passed!")
-- Types: N/A this module (no code changed); local mypy is broken pre-existing
-  (Python 3.14 venv vs 3.11 CI) — CI is authoritative until M2.3
-- Build: N/A (docs only)
+- Types: pending CI (local mypy broken pre-existing — M2.3 fixes)
+- Build: N/A (no source code changed)
 - Unit tests: PASS (263 passed, 90.42% coverage, unchanged from baseline)
-- Integration: not applicable (harness itself is M0.2)
-- Docs updated: YES (this file + the two plan docs)
-- Worktree: CLEAN
-- Approval: APPROVED & MERGED (e689d92)
+- Integration: locally auto-skipped (C1); CI run pending merge
+- Docs updated: YES (this file)
+- Worktree: has uncommitted M0.2 changes (about to be committed)
+- Approval: PENDING (merge)
 
 ---
 
 Verification commands (backend venv is at backend/venv, Python 3.14 locally):
-  cd backend && ./venv/Scripts/python.exe -m pytest tests/ -q      # 263 passed
+  cd backend && ./venv/Scripts/python.exe -m pytest tests/ -q      # 263 passed, 4 skipped
   cd backend && ./venv/Scripts/ruff.exe check .                    # clean
   # NOTE: run mypy in CI, not locally — local mypy exits 1 with no output (M2.3 fixes)
+  # NOTE: integration tests auto-skip locally (TEST_DATABASE_URL unset per C1)
 
-Next module on deck (await owner go-ahead):
-  M0.2 — Integration test harness on real PostgreSQL (CI-first per constraint C1)
-  Branch: refactor/m0.2-integration-harness
-  Files: backend/tests/conftest.py, new backend/tests/integration/,
-         backend/pyproject.toml (integration marker), .github/workflows/ci.yml
-  Acceptance: trivial round-trip (create user -> insert transaction -> list via
-    GET /api/v1/transactions) green in CI; unit suite unaffected; local run
-    without a DB skips cleanly.
+Next module on deck (DO NOT START — await M0.2 merge + owner go-ahead):
+  M0.3 — E2E pipeline test + amount-sign contract tests
+  Branch: refactor/m0.3-e2e-pipeline-tests
+  Files: backend/tests/integration/test_upload_pipeline_e2e.py,
+         backend/tests/integration/test_amount_contract.py,
+         docs/CONVENTIONS.md
+  Acceptance: E2E green with today's behavior (xfails aside); convention doc reviewed.
+  Gains: the regression net for E3, E4, E5, E6 — highest-leverage artifact in the program.
