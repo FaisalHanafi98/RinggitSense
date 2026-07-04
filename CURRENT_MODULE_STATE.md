@@ -2,7 +2,7 @@
 
 > Living engineering state file. Overwrite this in place as execution advances.
 > Not a summary — the single source of truth for "where are we right now."
-> Last updated: 2026-07-04
+> Last updated: 2026-07-04 (post-merge)
 
 ---
 
@@ -17,13 +17,13 @@ Current Epic:
 E0 — Regression Safety Net
 
 Current Module:
-M0.1 — Baseline freeze & working agreements
+M0.1 — Baseline freeze & working agreements  [MERGED]
 
 Status:
-100% implemented · committed on branch · AWAITING MERGE APPROVAL to main
+MERGED to main (merge commit e689d92, --no-ff) · verified stable on main · NOT pushed to origin
 
-Branch:
-refactor/m0.1-baseline-freeze  (HEAD = c161c97)
+Branch (merged, retained for history):
+refactor/m0.1-baseline-freeze  (was HEAD 4855493; merged into main at e689d92 on 2026-07-04)
 
 Baseline tag:
 pre-refactor-baseline -> c83e2c6  (program-wide revert point)
@@ -35,22 +35,29 @@ Completed (this module):
 - docs/plans/refactor-baseline.md  (baseline evidence, defect register B1-B4,
   working agreements, decision log D1-D5, constraints C1/C2, module ledger)
 - docs/plans/refactor-execution-plan.md  (full roadmap committed into the repo)
+- CURRENT_MODULE_STATE.md  (this living state file)
 - Baseline evidence captured: 263 tests pass, 90.42% coverage, ruff clean
-- Committed: c161c97 "docs(refactor): freeze pre-refactor baseline ... (M0.1)"
+- Committed on branch: c161c97 (docs), 4855493 (state file)
+- Merged to main: e689d92 (--no-ff merge commit)
+
+Verification on main (post-merge, 2026-07-04):
+- pytest: 263 passed, 90.42% coverage (identical to pre-merge)
+- ruff: All checks passed!
+- worktree: clean
 
 Remaining (this module):
-- MERGE branch refactor/m0.1-baseline-freeze -> main (needs owner confirmation)
+- PUSH main to origin (separate owner-confirmed action — not auto-pushed)
 - Optional owner action: enable GitHub branch protection on main (manual, not scriptable here)
 
 Blocked:
-- Merge to main is gated on explicit owner approval (PDPA project rule: no auto-merge)
+- None. Module is closed.
 
 Regression Risk:
 - None. Module is docs + a git tag only. Zero source/test/config files touched.
 
 Next Action:
-- STOP. Await owner instruction. On approval: merge to main, then begin M0.2.
-- Do NOT begin M0.2 (integration harness) until M0.1 is merged and approved.
+- M0.1 is CLOSED. Next module is M0.2 (integration test harness, CI-first per C1).
+- Do NOT begin M0.2 until the owner explicitly says go.
 
 Quality Gate:
 - Lint: PASS (ruff "All checks passed!")
@@ -61,7 +68,7 @@ Quality Gate:
 - Integration: not applicable (harness itself is M0.2)
 - Docs updated: YES (this file + the two plan docs)
 - Worktree: CLEAN
-- Approval: PENDING (merge)
+- Approval: APPROVED & MERGED (e689d92)
 
 ---
 
@@ -70,5 +77,11 @@ Verification commands (backend venv is at backend/venv, Python 3.14 locally):
   cd backend && ./venv/Scripts/ruff.exe check .                    # clean
   # NOTE: run mypy in CI, not locally — local mypy exits 1 with no output (M2.3 fixes)
 
-Next module on deck (DO NOT START YET):
+Next module on deck (await owner go-ahead):
   M0.2 — Integration test harness on real PostgreSQL (CI-first per constraint C1)
+  Branch: refactor/m0.2-integration-harness
+  Files: backend/tests/conftest.py, new backend/tests/integration/,
+         backend/pyproject.toml (integration marker), .github/workflows/ci.yml
+  Acceptance: trivial round-trip (create user -> insert transaction -> list via
+    GET /api/v1/transactions) green in CI; unit suite unaffected; local run
+    without a DB skips cleanly.
