@@ -115,12 +115,34 @@ because all three shipped bugs live at boundaries no existing test crosses. Then
 correctness, then performance, then durability, then data-model, then API/
 frontend, then measurement, with documentation running in parallel throughout.
 
+**Branch structure (owner directive, 2026-07-04)**:
+
+| Branch | Role | What lands here |
+|---|---|---|
+| `main` | Production-grade, deployment-connected | Promotions from `dev` at integration checkpoints (CP-0…CP-6) only, when all available gates pass |
+| `dev` | Sandbox, primary working branch | Module merges (`refactor/m<x>-<slug>` → `dev`); active work lives here |
+
+Worktree layout:
+- `RinggitSense/` on `dev` — primary, where we work
+- `RinggitSense-prod/` on `main` — promotion-only
+
+Remote: `origin` (the standard git convention; avoids the branch-name ambiguity
+that occurs when a remote shares a name with a branch).
+
 **Execution protocol per module (binding)**:
-branch `refactor/m<id>-<slug>` → implement to the module card → pass quality
-gates (§14) → merge to `main` (owner-confirmed) → **stop, report, await
+branch `refactor/m<id>-<slug>` off `dev` → implement to the module card → pass
+quality gates (§14) → merge to `dev` (owner-confirmed) → **stop, report, await
 approval** → next module. One PR = one module (Constraint C2). Scope is the
 module card; discoveries become GitHub issues labeled `deferred-from-refactor`
 (Decision D4) — never implemented inline.
+
+**Promotion protocol (dev → main)**:
+At each integration checkpoint (CP-0…CP-6, §12), or on owner demand, `dev` is
+promoted to `main` via a `--no-ff` merge after passing all gates that exist at
+that point. Early checkpoints require: unit (263+), integration (CI green),
+lint (ruff), types (CI mypy). Later checkpoints add: performance evidence
+(M3.x onward), frontend gates (M7.1 onward), security review. `main` is the
+only branch connected to the deployed site domain.
 
 **Calendar estimate** (solo dev): Waves 0–3 ≈ 3.5–4 weeks (core de-risk
 milestone); Waves 4–6 ≈ 3–4 further weeks. E10 horizon excluded.
@@ -894,8 +916,9 @@ doc rot→M9.1/M9.2/M9.3 · no CD→E10.
 6. Every temporary artifact has a named removal ticket at creation
    (M1.1 window label → removed by M7.3; M4.4 `JOB_BACKEND` flag → removed one
    release after acceptance; M7.3 client-side fallback → removed next release).
-7. **Constraint C2**: one module = one branch = one merge; stop and await owner
-   approval between modules.
+7. **Constraint C2**: one module = one branch = one merge to `dev`; stop and
+   await owner approval between modules. `dev` → `main` promotion happens at
+   integration checkpoints (§12) or on owner demand.
 
 ---
 
@@ -960,11 +983,21 @@ cd backend && ./venv/Scripts/ruff.exe check .                   # expect clean
 
 # 14. Quality Gates
 
+**Per module (merge to `dev`)**:
 ```
 Module complete → Lint → Types (CI-authoritative until M2.3) → Build
 → Unit → Integration (once M0.2 exists) → Coverage ≥ 90.42%
 → Perf evidence (T3 modules) → Docs updated (incl. CURRENT_MODULE_STATE.md)
-→ Owner review & approval → MERGE → stop; await approval → next module
+→ Owner review & approval → MERGE to dev → stop; await approval → next module
+```
+
+**Per promotion (dev → main, at CP-0…CP-6 or owner demand)**:
+```
+dev stable → all gates available at this checkpoint pass
+  (unit + integration + lint + types always; + performance from M3.x;
+   + frontend from M7.1; + security review as applicable)
+→ owner review & approval → MERGE dev → main (--no-ff) → push origin main
+→ main is the deployment-connected branch
 ```
 
 **Failure protocol**: any gate fails → STOP; diagnose root cause (no blind
@@ -1172,8 +1205,10 @@ open as its own follow-on program) · final report against the audit scorecard.
   without DB), M2.3 (no image-build gate), M4.4 (plain-process worker), M10.3
   (blocked).
 
-**Constraint C2 — One PR = one module** · OWNER DIRECTIVE 2026-07-04
-- Module → branch → commit → test → verify → merge → stop → approval → next.
+**Constraint C2 — One PR = one module; dev/main split** · OWNER DIRECTIVE 2026-07-04
+- Module → branch (off `dev`) → commit → test → verify → merge to `dev` → stop
+  → approval → next module. `dev` → `main` promotion at integration checkpoints
+  (§12) or on owner demand. `main` is deployment-connected; `dev` is the sandbox.
 
 **Earlier in-repo ADRs (pre-program, still standing)**:
 - `docs/adr/ADR-001-cost-optimization.md` — Sonnet 4 for all agents (its cost
