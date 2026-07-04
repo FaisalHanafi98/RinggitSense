@@ -2,7 +2,7 @@
 
 > Living engineering state file. Overwrite this in place as execution advances.
 > Not a summary — the single source of truth for "where are we right now."
-> Last updated: 2026-07-04 (post-merge)
+> Last updated: 2026-07-04 (post-merge + branch streamline)
 
 ---
 
@@ -21,12 +21,25 @@ M0.1 — Baseline freeze & working agreements  [MERGED]
 
 Status:
 MERGED to main (merge commit e689d92, --no-ff) · verified stable on main · NOT pushed to origin
-
-Branch (merged, retained for history):
-refactor/m0.1-baseline-freeze  (was HEAD 4855493; merged into main at e689d92 on 2026-07-04)
+Branches streamlined to only main (2026-07-04) — see "Branch streamline" below
 
 Baseline tag:
 pre-refactor-baseline -> c83e2c6  (program-wide revert point)
+
+---
+
+Branch streamline (2026-07-04):
+- refactor/m0.1-baseline-freeze: deleted (was merged into main at e689d92; obsolete)
+- feat/ag-05-query-agent: deleted (local + origin; 1 unmerged commit 70226e6, 452 lines
+  AG-05 WIP). Tracked as deferred-from-refactor issue #1:
+  https://github.com/FaisalHanafi98/RinggitSense/issues/1
+  Recover via: git cherry-pick 70226e6
+- chore/deployment-config: deleted (local + origin; 1 unmerged commit 4f7b598, 589 lines
+  deployment config WIP). Tracked as deferred-from-refactor issue #2:
+  https://github.com/FaisalHanafi98/RinggitSense/issues/2
+  Recover via: git cherry-pick 4f7b598
+- Result: only `main` remains (local + origin). WIP commits remain in git's object
+  store, recoverable by SHA, referenced in the two issues above (per decision D4).
 
 ---
 
